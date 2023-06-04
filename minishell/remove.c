@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 16:00:46 by mfadil            #+#    #+#             */
-/*   Updated: 2023/06/01 23:51:50 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/06/03 12:50:01 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,5 +59,11 @@ void	remove_token(char **argv)
 			remove_bkslash(argv, i);
 			remove_char(argv, i);
 		}
+		else if (((*argv)[i] == '\\')
+		&& ((*argv)[i + 1] == '\\' || (*argv)[i + 1] == '"'
+			|| (*argv)[i + 1] == '\''))
+			remove_char(argv, i++);
+		else
+			i++;
 	}
 }

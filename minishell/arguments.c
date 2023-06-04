@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 23:47:53 by mfadil            #+#    #+#             */
-/*   Updated: 2023/06/01 15:47:52 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/06/03 14:14:24 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,9 @@ void	set_arguments(int ac, char **av, char *str)
 		skip_sp(&str);
 		lnt = arg_len(str);
 		av[i] = ft_strldup(str, lnt);
+		remove_token(&(av[i]));
+		i++;
+		str += lnt;
+		skip_sp(&str);
 	}
 }

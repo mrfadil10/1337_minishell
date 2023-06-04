@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 15:43:30 by stemsama          #+#    #+#             */
-/*   Updated: 2023/05/31 21:54:05 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/06/03 16:25:42 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	parsing(t_data *parameter)
 	{
 		parameter->ac = arg_counter(parameter->commands[i]);
 		parameter->av = (char **)ft_calloc(sizeof(char *), parameter->ac + 1);
+		set_arguments(parameter->ac, parameter->av, parameter->commands[i]);
 		
 	}
 	free_matrice(parameter->commands);

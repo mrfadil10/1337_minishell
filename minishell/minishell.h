@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:35:44 by stemsama          #+#    #+#             */
-/*   Updated: 2023/06/01 19:24:57 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/06/04 15:43:47 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stdlib.h>
 # include <limits.h>
 # include <unistd.h>
+# include <fcntl.h>
 # include <time.h>
 # include <sys/wait.h>
 # include "libft/libft.h"
@@ -96,5 +97,8 @@ char	*ft_strldup(const char *s, int lnt);
 int		arg_token_lnt(char *str, char c);
 int		arg_counter(char *str);
 int		char_strlen(char *str, char c);
+void	remove_token(char **argv);
+void	set_arguments(int ac, char **av, char *str);
+char	**is_command(char *str, t_data *parameter);
 
 #endif
