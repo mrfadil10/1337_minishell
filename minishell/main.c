@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:35:42 by stemsama          #+#    #+#             */
-/*   Updated: 2023/05/29 11:10:06 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/06/06 23:00:20 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 int	main(int argc, char **argv, char **env)
 {
-	t_env	*lst_env;
+	t_data	*lst_env;
 	t_data	*parameter;
 	char	*line;
-	char	**cmd;
 
 	(void) argc;
 	(void) argv;
+	parameter = NULL;
 	lst_env = creat_env(env);
 	lst_env = sort_env(&lst_env);
 	sig_nals();

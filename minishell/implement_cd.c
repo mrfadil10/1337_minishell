@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   implement_cd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stemsama <stemsama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 16:18:47 by stemsama          #+#    #+#             */
-/*   Updated: 2023/05/06 15:56:21 by stemsama         ###   ########.fr       */
+/*   Updated: 2023/06/06 22:58:40 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	execute_cd(t_env **env, char **argv)
+int	execute_cd(t_data **env, char **argv)
 {
 	char	*path;
 
@@ -29,7 +29,7 @@ int	execute_cd(t_env **env, char **argv)
 	return (0);
 }
 
-char	*get_path(t_env **env, char **argv)
+char	*get_path(t_data **env, char **argv)
 {
 	char	*path;
 
@@ -55,9 +55,9 @@ char	*get_path(t_env **env, char **argv)
 	return (path);
 }
 
-char	*get_value(t_env **env, char *name)
+char	*get_value(t_data **env, char *name)
 {
-	t_env	*value2;
+	t_data	*value2;
 
 	value2 = *env;
 	while (value2 && ft_strcmp(value2->name, name))
@@ -67,7 +67,7 @@ char	*get_value(t_env **env, char *name)
 	return (NULL);
 }
 
-void	go_to_home(t_env **env)
+void	go_to_home(t_data **env)
 {
 	char	*pwd;
 	char	*oldpwd;
@@ -79,13 +79,13 @@ void	go_to_home(t_env **env)
 	// printf("\nOLDPWD	<<----------->> %s\n", get_value(env, "OLDPWD"));
 	// printf("PWD	<<----------->> %s\n", get_value(env, "PWD"));
 	upd_oldpwd(env, pwd);
-	// printf("OLDPWD	<<----------->> %s\n", get_value(env, "OLDPWD")); 
+	// printf("OLDPWD	<<----------->> %s\n", get_value(env, "OLDPWD"));
 	// printf("PWD	<<----------->> %s\n", get_value(env, "PWD"));
 }
 
-int	upd_oldpwd(t_env **env, char *pwd)
+int	upd_oldpwd(t_data **env, char *pwd)
 {
-	t_env	*cur;
+	t_data	*cur;
 
 	cur = *env;
 	while (cur && ft_strcmp(cur->name, "OLDPWD"))

@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 23:12:41 by stemsama          #+#    #+#             */
-/*   Updated: 2023/05/25 23:38:05 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/06/05 23:45:20 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ void	pars_echo(char **argv, int *is_n, int *i)
 	}
 }
 
-int	execute_echo(char **argv)//list des commandes
+//list des commandes
+int	execute_echo(char **argv)
 {
 	int	i;
 	int	j;

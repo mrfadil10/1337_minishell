@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   tools1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stemsama <stemsama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 23:35:48 by stemsama          #+#    #+#             */
-/*   Updated: 2023/05/06 15:59:54 by stemsama         ###   ########.fr       */
+/*   Updated: 2023/06/06 23:00:50 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_lstadd_back2(t_env **lst, t_env *new)
+void	ft_lstadd_back2(t_data **lst, t_data *new)
 {
-	t_env	*tmp;
+	t_data	*tmp;
 
 	tmp = *lst;
 	if (*lst == NULL)
@@ -30,11 +30,11 @@ void	ft_lstadd_back2(t_env **lst, t_env *new)
 	tmp->next = new;
 }
 
-t_env	*ft_lstnew_ind2(char *content)
+t_data	*ft_lstnew_ind2(char *content)
 {
-	t_env	*b;
+	t_data	*b;
 
-	b = (t_env *)malloc(sizeof(t_env));
+	b = (t_data *)malloc(sizeof(t_data));
 	if (!b)
 		return (NULL);
 	b->name = get_name(content);
@@ -59,9 +59,9 @@ char	*get_value1(char *str)
 	return (ft_strchr(str, '='));
 }
 
-t_env	*sort_env(t_env **env)
+t_data	*sort_env(t_data **env)
 {
-	t_env	*cur;
+	t_data	*cur;
 	char	*sp;
 
 	cur = *env;

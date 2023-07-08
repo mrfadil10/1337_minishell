@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 16:00:46 by mfadil            #+#    #+#             */
-/*   Updated: 2023/06/03 12:50:01 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/06/06 19:08:58 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,16 @@ void	remove_char(char **str, int i)
 }
 
 // *i
-void	remove_bkslash(char **str, int i)
+void	remove_bkslash(char **str, int *i)
 {
-	while ((*str)[i])
+	while ((*str)[*i])
 	{
-		if ((*str)[i] == '\\'
-		&& ((*str)[i + 1] == '\\' || (*str)[i + 1] == '"'))
-			remove_char(str, i);
-		else if ((*str)[i] == '"')
+		if ((*str)[*i] == '\\'
+		&& ((*str)[*i + 1] == '\\' || (*str)[*i + 1] == '"'))
+			remove_char(str, *i);
+		else if ((*str)[*i] == '"')
 			break ;
-		i++;
+		(*i)++;
 	}
 }
 
@@ -55,8 +55,7 @@ void	remove_token(char **argv)
 		else if ((*argv)[i] == '"')
 		{
 			remove_char(argv, i);
-			// need &i
-			remove_bkslash(argv, i);
+			remove_bkslash(argv, &i);
 			remove_char(argv, i);
 		}
 		else if (((*argv)[i] == '\\')

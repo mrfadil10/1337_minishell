@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   implement_export.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stemsama <stemsama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 00:17:23 by stemsama          #+#    #+#             */
-/*   Updated: 2023/05/06 16:06:13 by stemsama         ###   ########.fr       */
+/*   Updated: 2023/06/06 22:59:45 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	affiche_export(t_env **env)
+void	affiche_export(t_data **env)
 {
-	t_env	*cur;
+	t_data	*cur;
 
 	cur = *env;
 	while (cur)
@@ -29,9 +29,9 @@ void	affiche_export(t_env **env)
 	}
 }
 
-int	*execute_export(t_env **env, char **argv)
+int	*execute_export(t_data **env, char **argv)
 {
-	t_env	*cur;
+	t_data	*cur;
 	int		i;
 
 	cur = *env;
@@ -58,12 +58,12 @@ int	*execute_export(t_env **env, char **argv)
 	return (0);
 }
 
-void	go_to_export(t_env **env, char *argv)
+void	go_to_export(t_data **env, char *argv)
 {
 	(void) env;
 	(void) argv;
 	printf("minishell: expo\n");
-	// t_env *add;
+	// t_data *add;
 	// if (check_existe(env, argv[i]) == 0 && ft_strnstr())
 		// ft_lstadd_back2(env, ft_lstnew_ind2(argv));
 }

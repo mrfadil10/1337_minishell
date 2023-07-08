@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   implement_env.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stemsama <stemsama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 23:13:51 by stemsama          #+#    #+#             */
-/*   Updated: 2023/05/06 15:49:59 by stemsama         ###   ########.fr       */
+/*   Updated: 2023/06/06 22:59:16 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_env	*execute_env(t_env **env)
+t_data	*execute_env(t_data **env)
 {
-	t_env	*tmp;
+	t_data	*tmp;
 
 	tmp = *env;
 	while (tmp)
@@ -27,10 +27,10 @@ t_env	*execute_env(t_env **env)
 	return (*env);
 }
 
-t_env	*creat_env(char **env)
+t_data	*creat_env(char **env)
 {
 	int		i;
-	t_env	*lst;
+	t_data	*lst;
 
 	i = -1;
 	lst = NULL;

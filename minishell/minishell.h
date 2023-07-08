@@ -6,14 +6,22 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:35:44 by stemsama          #+#    #+#             */
-/*   Updated: 2023/06/04 15:43:47 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/07/08 19:34:21 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# define PIPE 0
 # define ERROR 1
+# define SUP 2
+# define INF 3
+# define SIQUOTE 4
+# define DOQUOTE 5
+# define COMMND 6
+# define ADD 7
+# define HRDC 8
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -26,6 +34,20 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+typedef struct s_collect
+{
+	void				*data;
+	struct s_collect	*next;
+}	t_collect;
+
+typedef struct globv
+{
+	t_collect	*tmp;
+	t_collect	*end;
+	int			exit;
+	int			heredoc;
+}	t_globv;
+
 typedef struct env
 {
 	char		*name;
@@ -36,26 +58,31 @@ typedef struct env
 
 typedef struct s_data
 {
-	int		ac;
-	char	**av;
-	char	**commands;
-	char	*str;
+	int				pipe[2];
+	int				mode;
+	int				sp;
+	int				ac;
+	char			**av;
+	char			*commands;
+	char			*str;
+	struct s_data	*prev;
+	struct s_data	*next;
 }	t_data;
 
 //-----------------------------------------------> implement_cd:
 
-int		execute_cd(t_env **env, char **argv);
-char	*get_path(t_env **env, char **argv);
-char	*get_value(t_env **env, char *name);
-void	go_to_home(t_env **env);
-int		upd_oldpwd(t_env **env, char *pwd);
+int		execute_cd(t_data **env, char **argv);
+char	*get_path(t_data **env, char **argv);
+char	*get_value(t_data **env, char *name);
+void	go_to_home(t_data **env);
+int		upd_oldpwd(t_data **env, char *pwd);
 
 //-----------------------------------------------> implement_env:
-t_env	*execute_env(t_env **env);
-t_env	*creat_env(char **env);
+t_data	*execute_env(t_data **env);
+t_data	*creat_env(char **env);
 
 //-----------------------------------------------> implement_pwd:
-void	execute_pwd(t_env **env);
+void	execute_pwd(t_data **env);
 
 //-----------------------------------------------> implement_echo:
 int		execute_echo(char **argv);
@@ -66,24 +93,24 @@ int		execute_exit(char **argv);
 int		ft_isnumber(char *str);
 
 //-----------------------------------------------> implement_export:
-int		*execute_export(t_env **env, char **argv);
+int		*execute_export(t_data **env, char **argv);
 int		pars_export(char *av);
-void	go_to_export(t_env **env, char *argv);
+void	go_to_export(t_data **env, char *argv);
 
 //-----------------------------------------------> implement_unset:
 void	execute_unset(char **argv);
 
 //-----------------------------------------------> tools1:
-void	ft_lstadd_back2(t_env **lst, t_env *new);
-t_env	*ft_lstnew_ind2(char *content);
+void	ft_lstadd_back2(t_data **lst, t_data *new);
+t_data	*ft_lstnew_ind2(char *content);
 char	*get_name(char *str);
 char	*get_value1(char *str);
-t_env	*sort_env(t_env **env);
+t_data	*sort_env(t_data **env);
 
 //-----------------------------------------------> tools2:
 int		is_builting(char **cmd);
-void	go_to_execve(t_env **lst_env, char **cmd, char **env);
-void	go_to_builting(char **cmd, t_env *lst_env);
+void	go_to_execve(t_data **lst_env, char **cmd, char **env);
+void	go_to_builting(char **cmd, t_data *lst_env);
 
 //-----------------------------------------------> handler_signals:
 int		sig_nals(void);
@@ -100,5 +127,6 @@ int		char_strlen(char *str, char c);
 void	remove_token(char **argv);
 void	set_arguments(int ac, char **av, char *str);
 char	**is_command(char *str, t_data *parameter);
+char	*type_substr(const char *str, unsigned int start, int type, size_t lnt);
 
 #endif

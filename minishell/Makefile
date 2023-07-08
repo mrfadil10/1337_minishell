@@ -6,7 +6,7 @@
 #    By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/06 15:15:14 by stemsama          #+#    #+#              #
-#    Updated: 2023/05/25 17:32:26 by mfadil           ###   ########.fr        #
+#    Updated: 2023/06/06 19:03:09 by mfadil           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,8 @@ SRC = tools1.c tools2.c main.c \
 		implement_cd.c implement_echo.c implement_env.c implement_exit.c\
 		implement_unset.c implement_pwd.c implement_export.c\
 		handler_signals.c \
-		parsing.c
+		parsing.c builtins.c arguments.c lnt_env_token.c parsing_tools.c\
+		remove.c \
 
 
 OBJECT = $(SRC:.c=.o)

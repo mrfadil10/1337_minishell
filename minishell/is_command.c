@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 20:17:24 by mfadil            #+#    #+#             */
-/*   Updated: 2023/06/05 00:02:31 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/06/06 23:37:37 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	redirection(t_data *parameter, int fd, int i)
 		{
 			fd = open(parameter->av[i + 1], O_CREAT, O_RDWR, O_APPEND, 0777);
 			read_ret = 0;
-			while (read_ret = read(fd, &c, 1))
+			while (read_ret == read(fd, &c, 1))
 			{
 				if (read_ret == -1)
 				{
@@ -58,13 +58,45 @@ static int	get_fd(t_data *parameter)
 		return (redirection(parameter, fd, i));
 }
 
-static int	copy_arguments(t_data *param)
+static int	count_red_ops(t_data *parameter)
 {
-	char	**args;
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 0;
+	while (i < parameter->ac)
+	{
+		if (!ft_memcmp(parameter->av[i], ">>", 3)
+			|| !ft_memcmp(parameter->av[i], ">", 2))
+		{
+			count++;
+			i++;
+		}
+		i++;
+	}
+	return (count);
+}
+
+static void	copy_arguments(t_data *parameter)
+{
+	char	**arg;
 	int		i;
 	int		j;
 
-	
+	i = 0;
+	j = 0;
+	parameter->ac -= count_red_ops(parameter) * 2;
+	arg = (char **)ft_calloc(sizeof(char *), parameter->ac + 1);
+	while (j < parameter->ac)
+	{
+		if (!ft_memcmp(parameter->av[i], ">>", 3)
+			|| !ft_memcmp(parameter->av[i], ">", 2))
+			i += 2;
+		else
+			arg[j++] = ft_strdup(parameter->av[i++]);
+	}
+	parameter->av = arg;
 }
 
 char	**is_command(char *str, t_data *parameter)
@@ -74,6 +106,7 @@ char	**is_command(char *str, t_data *parameter)
 	if (parameter->av[0] && *(parameter->av[0]))
 	{
 		fd = get_fd(parameter);
-
+		copy_arguments(parameter);
+		//parameter->ret = ;
 	}
 }
