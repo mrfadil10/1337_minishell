@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 19:30:32 by mfadil            #+#    #+#             */
-/*   Updated: 2023/06/07 12:13:35 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/07/09 11:53:11 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,4 @@ static int	is_builtins(t_data *parameter, int fd)
 
 int	check_builtins(t_data *parameter, int fd)
 {
-	parameter->ret = 0;
-	if ()
 }

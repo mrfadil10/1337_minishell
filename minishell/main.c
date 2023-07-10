@@ -6,11 +6,13 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:35:42 by stemsama          #+#    #+#             */
-/*   Updated: 2023/06/06 23:00:20 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/07/10 15:47:14 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_globv	g_data;
 
 int	main(int argc, char **argv, char **env)
 {

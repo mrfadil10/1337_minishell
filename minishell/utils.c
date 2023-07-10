@@ -6,13 +6,11 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 11:23:19 by mfadil            #+#    #+#             */
-/*   Updated: 2023/07/08 19:09:24 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/07/10 15:47:04 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-t_globv	g_data;
 
 t_collect	*type_lstlast(t_collect *lst)
 {

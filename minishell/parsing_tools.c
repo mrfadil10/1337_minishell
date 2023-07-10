@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 19:59:54 by mfadil            #+#    #+#             */
-/*   Updated: 2023/07/08 19:36:13 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/07/09 12:48:59 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,14 +121,71 @@
 //	return (matrice);
 //}
 
-void	put_back(t_data *data, char *str, int type, int lnt)
+char	*type_strdup(const char *src, int type)
+{
+	char	*dup;
+	int		len;
+
+	len = ft_strlen(src);
+	dup = (char *)back_alloc(sizeof(char) * (len + 1), type);
+	if (!(dup))
+		return (0);
+	len = 0;
+	while (src[len])
+	{
+		dup[len] = src[len];
+		len++;
+	}
+	dup[len] = '\0';
+	return (dup);
+}
+
+t_data	*new_data(t_data *prev, char *str, int genre)
+{
+	t_data	*new_data;
+
+	new_data = back_alloc(sizeof(t_data), 1);
+	new_data->genre = genre;
+	if (genre == SIQUOTE || genre == DOQUOTE)
+	{
+		new_data->av = back_alloc(sizeof(char *) * 2, 1);
+		new_data->av[0] = type_strdup(str, 1);
+		new_data->av[1] = 0;
+	}
+	else
+		new_data->av = ft_split(str, ' ');
+	new_data->prev = prev;
+	new_data->next = NULL;
+}
+
+t_data	*ft_mylstlast(t_data *list)
+{
+	t_data	*tmp;
+
+	if (list == NULL)
+		return (NULL);
+	tmp = list;
+	while (tmp->next != NULL)
+		tmp = tmp->next;
+	return (tmp);
+}
+
+void	put_back(t_data **data, char *str, int genre, int lnt)
 {
 	t_data	*list;
 	char	*s;
 
-	if (str && (type == SIQUOTE || type == DOQUOTE || type == COMMND))
+	if (str && (genre == SIQUOTE || genre == DOQUOTE || genre == COMMND))
 		s = type_substr(str - lnt, 0, 1, lnt);
 	else
 		s = NULL;
-	
+	if (!(*data))
+	{
+		*data = new_data(NULL, str, genre);
+	}
+	else
+	{
+		list = ft_mylstlast(*data);
+		list->next = new_data(list, str, genre);
+	}
 }
