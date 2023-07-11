@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 15:43:30 by stemsama          #+#    #+#             */
-/*   Updated: 2023/07/10 15:33:29 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/07/11 20:53:57 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,7 +226,8 @@ int	is_closed(char *str, int type)
 		i++;
 	if (str[i] == '\0' || ft_strlen(str) == 1)
 	{
-		ft_putstr_fd("minishell: quote not closed", 1);
+		ft_putstr_fd("minishell: quote not closed", 2);
+		// std error mybe in return
 		return (1);
 	}
 	return (0);
