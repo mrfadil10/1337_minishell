@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 19:59:54 by mfadil            #+#    #+#             */
-/*   Updated: 2023/07/09 12:48:59 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/07/12 17:07:27 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,21 +104,6 @@
 //		}
 //	}
 //	return (n[1]);
-//}
-
-//char	**split_case(char *str, char c)
-//{
-//	char	**matrice;
-//	int		i;
-
-//	if (!str)
-//		return (NULL);
-//	i = str_numbers(str, c);
-//	matrice = (char **)ft_calloc(sizeof(char *), i + 1);
-//	if (!matrice)
-//		return (NULL);
-//	set_matrice(matrice, str, c, i);
-//	return (matrice);
 //}
 
 char	*type_strdup(const char *src, int type)

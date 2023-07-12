@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 15:43:30 by stemsama          #+#    #+#             */
-/*   Updated: 2023/07/11 20:53:57 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/07/12 17:48:37 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,6 @@
 //	return (0);
 //}
 
-//static int	parse_quotes(int i, char **str)
-//{
-//	i++;
-//	while (*str[i] && (*str[i] != '\'' || *str[i] != '\"'))
-//		i++;
-//	if (!(*str)[i])
-//	{
-//		ft_putstr_fd("Quotes not closed\n", 2);
-//		return (1);
-//	}
-//	return (0);
-//}
 
 //static int	check_env(t_data *parameter, char **str)
 //{
@@ -201,16 +189,6 @@ t_data	*tokenize(char *line)
 	}
 	return (data);
 }
-	//if (parse_semicolon(paramete))
-	//	return ;
-	//parameter->commands = split_case(parameter->str, ';');
-	//while (parameter->commands[i])
-	//{
-	//	parameter->ac = arg_counter(parameter->commands[i]);
-	//	parameter->av = (char **)ft_calloc(sizeof(char *), parameter->ac + 1);
-	//	set_arguments(parameter->ac, parameter->av, parameter->commands[i]);
-	//}
-	//free_matrice(parameter->commands);
 
 int	is_closed(char *str, int type)
 {
@@ -227,7 +205,19 @@ int	is_closed(char *str, int type)
 	if (str[i] == '\0' || ft_strlen(str) == 1)
 	{
 		ft_putstr_fd("minishell: quote not closed", 2);
-		// std error mybe in return
+		return (1);
+	}
+	return (0);
+}
+
+int	parse_quotes(int i, char **str)
+{
+	i++;
+	while (*str[i] && (*str[i] != '\'' || *str[i] != '\"'))
+		i++;
+	if (!(*str)[i])
+	{
+		ft_putstr_fd("Quotes not closed\n", 2);
 		return (1);
 	}
 	return (0);
@@ -240,7 +230,7 @@ int	lexer(t_data *data, char **env)
 	node = data;
 	if (data->genre == HRDC || ft_mylstlast(data)->genre == PIPE)
 	{
-		ft_putstr_fd("minishell: syntax error near unexpected token \n", 1);
+		ft_putstr_fd("minishell: syntax error near unexpected token \n", 2);
 		return (1);
 	}
 	while (node)
@@ -249,18 +239,29 @@ int	lexer(t_data *data, char **env)
 			|| node->genre == HRDC)
 		{
 			if (node->genre == HRDC)
-				
+				herdoc_expander(node, env);
 			if (is_closed(node->av[0], node))
 				return (1);
 		}
+		node = node->next;
 	}
 }
+
 t_data	parsing(char *line, char *env)
 {
 	t_data	*data;
+	t_data	*tmp;
 
 	data = tokenize(line);
 	if (!data)
 		return (NULL);
-	printf("--> parsing <--\n");
+	if (lexer(data, env))
+		return (NULL);
+	tmp = ft_lstlast(data);
+	if (tmp->genre == SUPERIOR || tmp->genre == INFERIOR || tmp->genre == ADD
+		|| tmp->genre == HRDC || tmp->genre == PIPE)
+	{
+		ft_putstr_fd("minishell: syntax error near unexpected token\n", 2);
+		return (NULL);
+	}
 }

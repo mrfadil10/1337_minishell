@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:35:44 by stemsama          #+#    #+#             */
-/*   Updated: 2023/07/10 22:46:29 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/07/12 19:27:51 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ void		go_to_sigint(int sig);
 void		go_to_sigquit(int sig);
 
 //-----------------------------------------------> parsing:
-void		parsing(t_data *parameter);
+t_data		parsing(char *line, char *env);
 int			arg_token_lnt(char *str, char c);
 int			arg_counter(char *str);
 int			char_strlen(char *str, char c);
@@ -136,5 +136,7 @@ void		put_back(t_data **data, char *str, int genre, int lnt);
 t_data		*new_data(t_data *prev, char *str, int genre);
 t_data		*ft_mylstlast(t_data *list);
 void		type_lstadd_back(void *ptr, int type);
+void		herdoc_expander(t_data *node, char **env);
+void		free_all(int fd);
 
 #endif

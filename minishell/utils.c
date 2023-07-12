@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 11:23:19 by mfadil            #+#    #+#             */
-/*   Updated: 2023/07/10 15:47:04 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/07/12 18:21:53 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_collect	*type_lstnew(void *content)
 {
 	t_collect	*b;
 
-	b = (t_collect *)malloc(sizeof(t_collect));
+	b = ( *)malloc(sizeof(t_collect));
 	if (!b)
 		exit (1);
 	b->data = content;
