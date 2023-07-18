@@ -6,14 +6,14 @@
 #    By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/06 15:15:14 by stemsama          #+#    #+#              #
-#    Updated: 2023/07/16 15:50:57 by mfadil           ###   ########.fr        #
+#    Updated: 2023/07/18 21:51:03 by mfadil           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 LIBFT			=	./libft/libft.a
 CC = cc
-FLAGS = -Wall -Werror -Wextra -I/Users/mfadil/.brew/opt/readline/include -g
+FLAGS = -Wall -Werror -Wextra -I/Users/mfadil/.brew/opt/readline/include -g #-fsanitize=address
 VAR = -lreadline -L/Users/mfadil/.brew/opt/readline/lib -lhistory
 
 SRC = main.c \

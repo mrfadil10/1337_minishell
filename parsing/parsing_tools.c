@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 19:59:54 by mfadil            #+#    #+#             */
-/*   Updated: 2023/07/18 07:47:25 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/07/18 17:35:53 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,12 +166,10 @@ void	put_back(t_data **data, char *str, int genre, int lnt)
 	else
 		s = NULL;
 	if (!(*data))
-	{
-		*data = new_data(NULL, str, genre);
-	}
+		*data = new_data(NULL, s, genre);
 	else
 	{
 		list = ft_mylstlast(*data);
-		list->next = new_data(list, str, genre);
+		list->next = new_data(list, s, genre);
 	}
 }

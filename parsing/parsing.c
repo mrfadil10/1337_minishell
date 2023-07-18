@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 15:43:30 by stemsama          #+#    #+#             */
-/*   Updated: 2023/07/16 20:51:41 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/07/18 21:36:10 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,11 +81,11 @@ void	token_str(t_data **data, char **str, int *lnt)
 	char	*line;
 
 	line = *str;
-	if (*(line - 1) == ' ')
+	if (*(line - 1) == 32)
 		c = 1;
 	else
 		c = 0;
-	while (*line && check_sep("\"'<>|", *line) != 0)
+	while (*line && !check_sep("\"'<>|", *line))
 	{
 		(*lnt)++;
 		line++;
@@ -115,13 +115,13 @@ void	token_quotes(t_data **data, char **str, int *lnt)
 		type = SIQUOTE;
 	(*lnt)++;
 	line++;
-	while (*(line++) && *line != i)
+	while (*line != i && *(line++))
 		(*lnt)++;
-	(*lnt)++;
 	line++;
-	put_back(data, *str, type, *lnt);
-	*lnt = 0;
+	(*lnt)++;
+	put_back(data, line, type, *lnt);
 	ft_mylstlast(*data)->sp = j;
+	*lnt = 0;
 	*str = line;
 }
 
@@ -172,13 +172,12 @@ t_data	*tokenize(char *line)
 			break ;
 		if (!check_sep("\"'<>|", *line))
 			token_str(&data, &line, &i);
-		else if (*line == '|')
-			put_back(&data, NULL, PIPE, i);
+		else if (*line == '\'' || *line == '"')
+			token_quotes(&data, &line, &i);
 		else if (*line == '<' || *line == '>')
 			token_redirect(&data, &line, &i);
-		else if (*line == '\'' || *line == '\"')
-			token_quotes(&data, &line, &i);
-		line++;
+		else if (*(line++) == '|')
+			put_back(&data, NULL, PIPE, i);
 	}
 	return (data);
 }
@@ -218,7 +217,7 @@ int	is_closed(char *str, int type)
 
 	//printf("%s\n", str);
 
-	i = 1;
+	i = 0;
 	if (type == DOQUOTE)
 		c = '"';
 	else
@@ -296,6 +295,12 @@ int	lexer(t_data *data, char **env)
 	}
 	while (node)
 	{
+		//	printf("1------>%s\n", node->av[0]);
+		//	printf("2------>%s\n", node->av[1]);
+		//	printf("3------>%s\n", node->next->av[0]);
+		//	printf("4------>%s\n", node->next->av[1]);
+		//printf("start av[0] == %s\n", node->av[0]);
+		//printf("start type == %d\n", node->genre);
 		if (node->genre != COMMND && node->genre != SIQUOTE
 			&& node->genre != DOQUOTE)
 		{
@@ -310,6 +315,8 @@ int	lexer(t_data *data, char **env)
 		}
 		if (node->genre == HRDC)
 			herdoc_expander(node, env);
+		//printf("end av[0] == %s\n", node->av[0]);
+		//printf("end type == %d\n", node->genre);
 		node = node->next;
 	}
 	return (0);

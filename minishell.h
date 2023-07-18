@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:35:44 by stemsama          #+#    #+#             */
-/*   Updated: 2023/07/16 20:45:36 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/07/18 11:51:54 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ typedef struct s_data
 	int				ac;
 	char			**av;
 	char			*commands;
-	char			*str;
 	struct s_data	*prev;
 	struct s_data	*next;
 }	t_data;

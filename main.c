@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:35:42 by stemsama          #+#    #+#             */
-/*   Updated: 2023/07/17 23:24:03 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/07/18 21:57:32 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ int	main(int argc, char **argv, char **env)
 	while (1)
 	{
 		line = readline("minishell$ ");
+		if (!line)
+			return (ft_putstr_fd("exit\n", 2), exit(2), 1);
 		cmd = ft_split(line, ' ');
 		add_history(line);
 		data = parsing(line, env);
@@ -44,8 +46,6 @@ int	main(int argc, char **argv, char **env)
 			data->av[i] = passe_sep2(data->av[i], '"');
 			i++;
 		}
-		printf("%s\n", data->av[0]);
-		printf("%s\n", data->av[1]);
 		if (is_builting(cmd))
 			go_to_builting(cmd, lst_env, lst_exp);
 		else

@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 11:23:19 by mfadil            #+#    #+#             */
-/*   Updated: 2023/07/16 18:39:03 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/07/18 14:17:34 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ char	*type_substr(const char *str, unsigned int start, int type, size_t lnt)
 	}
 	if (ft_strlen(str) < lnt)
 		lnt = ft_strlen(str);
-	new_str = (char *)back_alloc(sizeof(char) * lnt + 1, type);
+	new_str = (char *)back_alloc(sizeof(char) * (lnt + 1), type);
 	c = 0;
 	while (start < ft_strlen(str) && c < lnt)
 	{
