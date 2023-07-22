@@ -66,6 +66,7 @@ void	go_to_execve(t_env **lst_env, char **cmd, char **env)
 			i++;
 		}
 		printf("Command not found\n");
+		exit (1);
 	}
 	wait(0);
 }
