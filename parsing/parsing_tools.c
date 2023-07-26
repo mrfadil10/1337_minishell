@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 19:59:54 by mfadil            #+#    #+#             */
-/*   Updated: 2023/07/18 17:35:53 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/07/25 16:07:48 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,13 +125,13 @@ char	*type_strdup(const char *src, int type)
 	return (dup);
 }
 
-t_data	*new_data(t_data *prev, char *str, int genre)
+t_data	*new_data(t_data *prev, char *str, int t_type)
 {
 	t_data	*new_data;
 
 	new_data = back_alloc(sizeof(t_data), 1);
-	new_data->genre = genre;
-	if (genre == SIQUOTE || genre == DOQUOTE)
+	new_data->t_type = t_type;
+	if (t_type == SIQUOTE || t_type == DOQUOTE)
 	{
 		new_data->av = back_alloc(sizeof(char *) * 2, 1);
 		new_data->av[0] = type_strdup(str, 1);
@@ -156,20 +156,20 @@ t_data	*ft_mylstlast(t_data *list)
 	return (tmp);
 }
 
-void	put_back(t_data **data, char *str, int genre, int lnt)
+void	put_back(t_data **data, char *str, int t_type, int lnt)
 {
 	t_data	*list;
 	char	*s;
 
-	if (str && (genre == SIQUOTE || genre == DOQUOTE || genre == COMMND))
+	if (str && (t_type == SIQUOTE || t_type == DOQUOTE || t_type == COMMND))
 		s = type_substr(str - lnt, 0, 1, lnt);
 	else
 		s = NULL;
 	if (!(*data))
-		*data = new_data(NULL, s, genre);
+		*data = new_data(NULL, s, t_type);
 	else
 	{
 		list = ft_mylstlast(*data);
-		list->next = new_data(list, s, genre);
+		list->next = new_data(list, s, t_type);
 	}
 }

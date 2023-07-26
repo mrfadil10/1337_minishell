@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:35:44 by stemsama          #+#    #+#             */
-/*   Updated: 2023/07/18 11:51:54 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/07/25 16:09:15 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ typedef struct env
 typedef struct s_data
 {
 	int				pipe[2];
-	int				genre;
+	int				t_type;
 	int				sp;
 	int				ac;
 	char			**av;
@@ -136,8 +136,8 @@ void		token_quotes(t_data **data, char **str, int *lnt);
 void		token_redirect(t_data **data, char **str, int *lnt);
 t_data		*tokenize(char *line);
 int			is_closed(char *str, int type);
-int			error_sup_inf(int genre, int next);
-int			error_pipe_hrdc_add(int genre, int next);
+int			error_sup_inf(int t_type, int next);
+int			error_pipe_hrdc_add(int t_type, int next);
 int			lexer(t_data *data, char **env);
 t_data		*parsing(char *line, char **env);
 
@@ -151,9 +151,9 @@ char		**is_command(char *str, t_data *parameter);
 int			pars_quote(char *line);
 
 //-----------------------------------------------> parsing_tools:
-void		put_back(t_data **data, char *str, int genre, int lnt);
+void		put_back(t_data **data, char *str, int t_type, int lnt);
 t_data		*ft_mylstlast(t_data *list);
-t_data		*new_data(t_data *prev, char *str, int genre);
+t_data		*new_data(t_data *prev, char *str, int t_type);
 char		*type_strdup(const char *src, int type);
 
 //-----------------------------------------------> expand:
@@ -177,5 +177,14 @@ void		free_all(int fd);
 
 //-----------------------------------------------> check_syntax:
 //-----------------------------------------------> check_syntax_utils:
+
+t_data	*normalize(t_data *data);
+char	**ft_tabjoin(char **s1, char **s2);
+void	tab_concat(t_data *node, t_data *data);
+int		ft_tablen(char **str);
+char	**dup_to_tab(char **str);
+t_data	*ft_dup(t_data *data);
+void	add_back(t_data **node, t_data *data);
+char	*ft_mystrjoin(char *s1, char *s2);
 
 #endif

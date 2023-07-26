@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 15:43:30 by stemsama          #+#    #+#             */
-/*   Updated: 2023/07/18 21:36:10 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/07/26 16:13:19 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,14 +245,14 @@ int	is_closed(char *str, int type)
 //	return (0);
 //}
 
-int	error_sup_inf(int genre, int next)
+int	error_sup_inf(int t_type, int next)
 {
-	if (next == SUPERIOR && genre != PIPE)
+	if (next == SUPERIOR && t_type != PIPE)
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token `>'\n", 1);
 		return (1);
 	}
-	if (next == INFERIOR && genre != PIPE)
+	if (next == INFERIOR && t_type != PIPE)
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token `<'\n", 1);
 		return (1);
@@ -260,24 +260,24 @@ int	error_sup_inf(int genre, int next)
 	return (0);
 }
 
-int	error_pipe_hrdc_add(int	genre, int next)
+int	error_pipe_hrdc_add(int	t_type, int next)
 {
-	if (genre == PIPE)
+	if (t_type == PIPE)
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 1);
 		return (1);
 	}
-	if (next == HRDC && genre != PIPE)
+	if (next == HRDC && t_type != PIPE)
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token `<<'\n", 1);
 		return (1);
 	}
-	if (next == ADD && genre != PIPE)
+	if (next == ADD && t_type != PIPE)
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token `>>'\n", 1);
 		return (1);
 	}
-	if (error_sup_inf(genre, next))
+	if (error_sup_inf(t_type, next))
 		return (1);
 	return (0);
 }
@@ -287,7 +287,7 @@ int	lexer(t_data *data, char **env)
 	t_data	*node;
 
 	node = data;
-	if (data->genre == HRDC || ft_mylstlast(data)->genre == PIPE)
+	if (data->t_type == HRDC || ft_mylstlast(data)->t_type == PIPE)
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n",
 			1);
@@ -300,23 +300,23 @@ int	lexer(t_data *data, char **env)
 		//	printf("3------>%s\n", node->next->av[0]);
 		//	printf("4------>%s\n", node->next->av[1]);
 		//printf("start av[0] == %s\n", node->av[0]);
-		//printf("start type == %d\n", node->genre);
-		if (node->genre != COMMND && node->genre != SIQUOTE
-			&& node->genre != DOQUOTE)
+		//printf("start type == %d\n", node->t_type);
+		if (node->t_type != COMMND && node->t_type != SIQUOTE
+			&& node->t_type != DOQUOTE)
 		{
 			if (node->next
-				&& error_pipe_hrdc_add(node->genre, node->next->genre))
+				&& error_pipe_hrdc_add(node->t_type, node->next->t_type))
 				return (1);
 		}
-		if (node->genre == SIQUOTE || node->genre == DOQUOTE)
+		if (node->t_type == SIQUOTE || node->t_type == DOQUOTE)
 		{
-			if (is_closed(node->av[0], node->genre))
+			if (is_closed(node->av[0], node->t_type))
 				return (1);
 		}
-		if (node->genre == HRDC)
+		if (node->t_type == HRDC)
 			herdoc_expander(node, env);
 		//printf("end av[0] == %s\n", node->av[0]);
-		//printf("end type == %d\n", node->genre);
+		//printf("end type == %d\n", node->t_type);
 		node = node->next;
 	}
 	return (0);
@@ -326,6 +326,7 @@ t_data	*parsing(char *line, char **env)
 {
 	t_data	*data;
 	t_data	*tmp;
+	int	i;
 
 	data = tokenize(line);
 	if (!data)
@@ -333,12 +334,28 @@ t_data	*parsing(char *line, char **env)
 	if (lexer(data, env))
 		return (NULL);
 	tmp = ft_mylstlast(data);
-	if (tmp->genre == SUPERIOR || tmp->genre == INFERIOR || tmp->genre == ADD
-		|| tmp->genre == HRDC || tmp->genre == PIPE)
+	if (tmp->t_type == SUPERIOR || tmp->t_type == INFERIOR || tmp->t_type == ADD
+		|| tmp->t_type == HRDC || tmp->t_type == PIPE)
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n",
 			1);
 		return (NULL);
 	}
+	tmp = data;
+	while (tmp)
+	{
+		i = 0;
+		while (tmp->av && tmp->av[i])
+		{
+			tmp->av[i] = passe_sep2(tmp->av[i], '\'');
+			tmp->av[i] = passe_sep2(tmp->av[i], '"');
+			i++;
+		}
+		tmp = tmp->next;
+	}
+	//printf("-------->%s\n", data->av[0]);
+	//printf("-------->%s\n", data->av[1]);
+	//printf("-------->%s\n", data->next->av[0]);
+	data = normalize(data);
 	return (data);
 }
