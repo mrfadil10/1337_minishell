@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 15:43:30 by stemsama          #+#    #+#             */
-/*   Updated: 2023/07/26 16:13:19 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/07/27 16:01:05 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -262,7 +262,7 @@ int	error_sup_inf(int t_type, int next)
 
 int	error_pipe_hrdc_add(int	t_type, int next)
 {
-	if (t_type == PIPE)
+	if (next == PIPE)
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 1);
 		return (1);
@@ -287,7 +287,8 @@ int	lexer(t_data *data, char **env)
 	t_data	*node;
 
 	node = data;
-	if (data->t_type == HRDC || ft_mylstlast(data)->t_type == PIPE)
+	// switch
+	if (data->t_type == PIPE || ft_mylstlast(data)->t_type == HRDC)
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n",
 			1);
@@ -295,12 +296,10 @@ int	lexer(t_data *data, char **env)
 	}
 	while (node)
 	{
-		//	printf("1------>%s\n", node->av[0]);
-		//	printf("2------>%s\n", node->av[1]);
-		//	printf("3------>%s\n", node->next->av[0]);
-		//	printf("4------>%s\n", node->next->av[1]);
-		//printf("start av[0] == %s\n", node->av[0]);
-		//printf("start type == %d\n", node->t_type);
+		//printf("0--%s\n", node->av[0]);
+		//printf("1--%s\n", node->av[1]);
+		//printf("2--%s\n", node->av[2]);
+		//printf("token type: %d\n", node->t_type);
 		if (node->t_type != COMMND && node->t_type != SIQUOTE
 			&& node->t_type != DOQUOTE)
 		{
@@ -315,8 +314,6 @@ int	lexer(t_data *data, char **env)
 		}
 		if (node->t_type == HRDC)
 			herdoc_expander(node, env);
-		//printf("end av[0] == %s\n", node->av[0]);
-		//printf("end type == %d\n", node->t_type);
 		node = node->next;
 	}
 	return (0);
@@ -326,7 +323,7 @@ t_data	*parsing(char *line, char **env)
 {
 	t_data	*data;
 	t_data	*tmp;
-	int	i;
+	int		i;
 
 	data = tokenize(line);
 	if (!data)
@@ -353,9 +350,6 @@ t_data	*parsing(char *line, char **env)
 		}
 		tmp = tmp->next;
 	}
-	//printf("-------->%s\n", data->av[0]);
-	//printf("-------->%s\n", data->av[1]);
-	//printf("-------->%s\n", data->next->av[0]);
 	data = normalize(data);
 	return (data);
 }

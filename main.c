@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:35:42 by stemsama          #+#    #+#             */
-/*   Updated: 2023/07/26 11:46:48 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/07/27 13:34:55 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,10 @@ int	main(int argc, char **argv, char **env)
 		data = parsing(line, env);
 		if (!data)
 			continue ;
-		//printf("-------->%s\n", data->av[0]);
-		//printf("-------->%s\n", data->av[1]);
-		if (is_builting(cmd))
-			go_to_builting(cmd, lst_env, lst_exp);
+		if (is_builting(data->av))
+			go_to_builting(data->av, lst_env, lst_exp);
 		else
-			go_to_execve(&lst_env, cmd, env);
+			go_to_execve(&lst_env, data->av, env);
 	}
 	return (0);
 }
