@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 15:18:10 by mfadil            #+#    #+#             */
-/*   Updated: 2023/07/26 16:52:27 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/07/29 11:23:34 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,16 +88,13 @@ t_data	*normalize(t_data *data)
 		if (data_prev == NULL)
 		{
 			add_back(&new_data, data);
-			printf("1--------->%s\n", new_data->av[0]);
-			printf("3--------->%s\n", new_data->av[1]);
 		}
 		else if ((data->t_type == SIQUOTE || data->t_type == DOQUOTE
-				|| data->t_type == COMMND) && (data_prev->t_type == SIQUOTE || data_prev->t_type == DOQUOTE
+				|| data->t_type == COMMND)
+			&& (data_prev->t_type == SIQUOTE || data_prev->t_type == DOQUOTE
 				|| data_prev->t_type == COMMND))
 		{
 			tab_concat(ft_mylstlast(new_data), data);
-			printf("4--------->%s\n", new_data->av[0]);
-			printf("5--------->%s\n", new_data->av[1]);
 		}
 		else
 			add_back(&new_data, data);

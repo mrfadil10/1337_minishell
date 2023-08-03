@@ -6,122 +6,28 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 19:59:54 by mfadil            #+#    #+#             */
-/*   Updated: 2023/07/25 16:07:48 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/08/03 10:27:29 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-//char	*ft_strldup(const char *s, int lnt)
-//{
-//	char	*ptr;
-//	int		size;
-//	int		i;
-
-//	size = 0;
-//	while (s[size])
-//		size++;
-//	if (size > lnt)
-//		size = lnt;
-//	ptr = (char *)malloc(sizeof(char) * (size + 1));
-//	if (!ptr)
-//		return (NULL);
-//	i = 0;
-//	while (i < size)
-//	{
-//		ptr[i] = s[i];
-//		i++;
-//	}
-//	ptr[i] = '\0';
-//	return (ptr);
-//}
-
-//int	set_strlen(char *str, char c)
-//{
-//	int	i;
-//	int	quote;
-
-//	i = 0;
-//	while (str[i] && str[i] != c)
-//	{
-//		if (str[i] == '\\' && (str[i + 1] == '\'' || str[i + 1] == '"'
-//				|| str[i + 1] == '\\' || str[i + 1] == c))
-//			i++;
-//		else if (str[i] == '"' || str[i] == '\'')
-//		{
-//			quote = str[i++];
-//			while (str[i] && str[i] != quote)
-//			{
-//				if (str[i] == '\\' && quote == '"' && (str[i + 1] == '\\'
-//						|| str[i + 1] == quote))
-//					i++;
-//				i++;
-//			}
-//		}
-//	}
-//	return (i);
-//}
-
-//static void	set_matrice(char **matrice, char *str, char c, int n)
-//{
-//	int	i;
-//	int	lnt;
-
-//	i = 0;
-//	while (i < n)
-//	{
-//		lnt = set_strlen(str, c);
-//		matrice[i] = ft_strldup(str, lnt);
-//		str += lnt + 1;
-//		i++;
-//	}
-//}
-
-//static int	str_numbers(char *str, char c)
-//{
-//	char	quote;
-//	int		n[2];
-
-//	n[0] = -1;
-//	n[1] = 1;
-//	while (str[++n[0]])
-//	{
-//		if (str[n[0]] == '\\' && (str[n[0] + 1] == '\'' || str[n[0] + 1] == '"'
-//				|| str[n[0] + 1] == '\\' || str[n[0] + 1] == c))
-//			n[0]++;
-//		else if (str[n[0]] == c)
-//			n[1]++;
-//		else if (str[n[0]] && (str[n[0]] == '"' && str[n[0]] == '\''))
-//		{
-//			quote = str[n[0]++];
-//			while (str[n[0]] && str[n[0]] != quote)
-//			{
-//				if (str[n[0]] == '\\' && quote == '"'
-//					&& (str[n[0] + 1] == quote || str[n[0] + 1] == '\\'))
-//					n[0]++;
-//				n[0]++;
-//			}
-//		}
-//	}
-//	return (n[1]);
-//}
-
 char	*type_strdup(const char *src, int type)
 {
 	char	*dup;
 	int		len;
+	int		i;
 
 	len = ft_strlen(src);
 	dup = (char *)back_alloc(sizeof(char) * (len + 1), type);
-	if (!(dup))
-		return (0);
-	len = 0;
-	while (src[len])
+	i = 0;
+	while (i < len)
 	{
-		dup[len] = src[len];
-		len++;
+		dup[i] = src[i];
+		i++;
+		dup[i] = 0;
 	}
-	dup[len] = '\0';
+	dup[len] = 0;
 	return (dup);
 }
 
@@ -172,4 +78,33 @@ void	put_back(t_data **data, char *str, int t_type, int lnt)
 		list = ft_mylstlast(*data);
 		list->next = new_data(list, s, t_type);
 	}
+}
+
+int	part_of_delete_quote(t_data *data, int i, int *j)
+{
+	char	*tmp;
+	int		quote;
+	int		y;
+
+	quote = 0;
+	if (data->av[i][*j] == '"')
+		quote = '"';
+	if (data->av[i][*j] == '\'')
+		quote = '\'';
+	if (quote != 0)
+	{
+		y = (*j)++;
+		while (data->av[i][*j] && data->av[i][*j] != quote)
+			(*j)++;
+		if (data->av[i][*j] == 0)
+			return (1);
+		tmp = data->av[i];
+		//printf("1------->%s<-------\n", data->av[0]);
+		//printf("2------->%s<-------\n", data->av[1]);
+		data->av[i] = delete_one(tmp, y,*j);
+		*j -= 1;
+		if (!data->av[i][*j])
+			return (1);
+	}
+	return (0);
 }

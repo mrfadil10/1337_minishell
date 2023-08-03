@@ -6,11 +6,38 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 20:36:27 by mfadil            #+#    #+#             */
-/*   Updated: 2023/07/26 17:08:19 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/08/02 23:57:39 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+char	**tab_fixed(char **str)
+{
+	int		i;
+	int		j;
+	char	**newtab;
+	int		lnt;
+
+	i = 0;
+	lnt = ft_tablen(str);
+	while (str[i])
+	{
+		if (str[i++][0] == '\0')
+			lnt--;
+	}
+	i = 0;
+	j = 0;
+	newtab = back_alloc(sizeof(char *) * (lnt + 1), 1);
+	while (str[i])
+	{
+		if (str[i][0])
+			newtab[j++] = type_strdup(str[i], 1);
+		i++;
+	}
+	newtab[j] = NULL;
+	return (newtab);
+}
 
 char	*ft_mystrjoin(char *s1, char *s2)
 {
@@ -55,4 +82,27 @@ void	free_all(int fd)
 		g_data.tmp = data;
 	else
 		g_data.end = data;
+}
+
+char	*delete_one(char *str, int idx, int c)
+{
+	char	*new;
+	int		i;
+	int		j;
+
+	new = back_alloc(sizeof(char) * ft_strlen(str) - 1, 1);
+	if (!new)
+		exit(1);
+	i = 0;
+	j = 0;
+	while (str[i])
+	{
+		while (i == c || i == idx)
+			i++;
+		if (str[i] == '\0')
+			break ;
+		new[j++] = str[i++];
+	}
+	new[j] = '\0';
+	return (new);
 }

@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 23:35:48 by stemsama          #+#    #+#             */
-/*   Updated: 2023/07/16 19:05:19 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/08/02 18:18:28 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,31 +71,12 @@ void	go_to_execve(t_env **lst_env, char **cmd, char **env)
 	wait(0);
 }
 
-char *passe_sep2(char *argv, char sep)
+char	*passe_sep(char *argv, char sep)
 {
-	char *new;
-	int i;
-	int j;
-
-	i = 0;
-	j = -1;
-	new = malloc(sizeof(char) * ft_strlen(argv));
-	while (argv[++j])
-	{
-		if (argv[j] != sep)
-		{
-			new[i] = argv[j];
-			i++;
-		}
-	}
-	return (new);
-}
-char *passe_sep(char *argv, char sep)
-{
-	char *new;
-	int i;
-	int j;
-	int check;
+	char	*new;
+	int		i;
+	int		j;
+	int		check;
 
 	check = 1;
 	i = 0;

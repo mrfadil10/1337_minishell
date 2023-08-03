@@ -6,50 +6,11 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 15:43:30 by stemsama          #+#    #+#             */
-/*   Updated: 2023/07/28 21:51:22 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/08/03 19:37:54 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-//static int	parse_semicolon(t_data *parameter)
-//{
-//	if (!parameter->str || ft_memcmp(parameter->str, ";", 2))
-//	{
-//		if (parameter->str)
-//			ft_putstr_fd("bash: syntax error near unexpected token `;'\n", 2);
-//		free(parameter->str);
-//		return (1);
-//	}
-//	return (0);
-//}
-
-
-//static int	check_env(t_data *parameter, char **str)
-//{
-//	int	i;
-//	int	brace;
-
-//	i = 0;
-//	brace = 0;
-//	while ((*str) && (*str)[i])
-//	{
-//		if (parse_quotes(&i, str) && (*str)[i] == '\'')
-//			return (1);
-//	}
-//}
-
-//void	free_matrice(char **matrice)
-//{
-//	int	i;
-
-//	i = 0;
-//	if (!matrice)
-//		return ;
-//	while (matrice[i])
-//		free(matrice[i++]);
-//	free(matrice);
-//}
 
 void	rep_sp(char *str)
 {
@@ -182,40 +143,10 @@ t_data	*tokenize(char *line)
 	return (data);
 }
 
-	//int	i;
-	//int	j;
-	//int	k;
-	//int	l;
-
-	//i = 0;
-	//j = 0;
-	//k = 0;
-	//l = 0;
-
-	//while (line[i])
-	//{
-	//	if (line[i] == '"')
-	//	{
-	//		l = 1;
-	//		j++;
-	//	}
-	//	else if (line[i] == '\'' && l == 0)
-	//		k++;
-	//	i++;
-	//}
-	//if (k % 2 != 0 || j % 2 != 0)
-	//{
-	//	ft_putstr_fd("minishell: Syntax Error: quote not closed\n", 1);
-	//	return (1);
-	//}
-	//return (0);
-
 int	is_closed(char *str, int type)
 {
 	int		c;
 	int		i;
-
-	//printf("%s\n", str);
 
 	i = 0;
 	if (type == DOQUOTE)
@@ -231,19 +162,6 @@ int	is_closed(char *str, int type)
 	}
 	return (0);
 }
-
-//int	parse_quotes(int i, char **str)
-//{
-//	i++;
-//	while (*str[i] && (*str[i] != '\'' || *str[i] != '\"'))
-//		i++;
-//	if (!(*str)[i])
-//	{
-//		ft_putstr_fd("Quotes not closed\n", 2);
-//		return (1);
-//	}
-//	return (0);
-//}
 
 int	error_sup_inf(int t_type, int next)
 {
@@ -264,17 +182,17 @@ int	error_pipe_hrdc_add(int	t_type, int next)
 {
 	if (next == PIPE)
 	{
-		ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 1);
+		ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
 		return (1);
 	}
 	if (next == HRDC && t_type != PIPE)
 	{
-		ft_putstr_fd("minishell: syntax error near unexpected token `<<'\n", 1);
+		ft_putstr_fd("minishell: syntax error near unexpected token `<<'\n", 2);
 		return (1);
 	}
 	if (next == ADD && t_type != PIPE)
 	{
-		ft_putstr_fd("minishell: syntax error near unexpected token `>>'\n", 1);
+		ft_putstr_fd("minishell: syntax error near unexpected token `>>'\n", 2);
 		return (1);
 	}
 	if (error_sup_inf(t_type, next))
@@ -291,7 +209,7 @@ int	lexer(t_data *data, char **env)
 	if (data->t_type == PIPE || ft_mylstlast(data)->t_type == HRDC)
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n",
-			1);
+			2);
 		return (1);
 	}
 	while (node)
@@ -324,7 +242,10 @@ t_data	*parsing(char *line, char **env)
 	t_data	*data;
 	t_data	*tmp;
 	int		i;
+	int		j;
 
+	i = 0;
+	j = 0;
 	data = tokenize(line);
 	if (!data)
 		return (NULL);
@@ -338,18 +259,50 @@ t_data	*parsing(char *line, char **env)
 			1);
 		return (NULL);
 	}
-	tmp = data;
-	while (tmp)
-	{
-		i = 0;
-		while (tmp->av && tmp->av[i])
-		{
-			tmp->av[i] = passe_sep2(tmp->av[i], '\'');
-			tmp->av[i] = passe_sep2(tmp->av[i], '"');
-			i++;
-		}
-		tmp = tmp->next;
-	}
 	data = normalize(data);
 	return (data);
 }
+	//tmp = data;
+	//expand(data, env);
+
+	//-------------------------------------------------
+
+	//while (data->av[i])
+	//{
+	//	j = 0;
+	//	while (data->av[i][j])
+	//	{
+	//		if (data->av[i][j] == '\'' || data->av[i][j] == '"')
+	//		{
+	//			if (part_of_delete_quote(data, i, &j))
+	//				break ;
+	//		}
+	//		else
+	//			j++;
+	//	}
+	//	i++;
+	//}
+	//data->commands = data->av[0];
+
+	//-------------------------------------------------
+
+	//int	i;
+	//tmp = data;
+	//while (tmp)
+	//{
+	//	i = 0;
+	//	while (tmp->av && tmp->av[i])
+	//	{
+	//		printf("enter\n");
+	//		tmp->av[i] = passe_sep2(tmp->av[i], '\'');
+	//		printf("#######------exit-----#######\n");
+	//		tmp->av[i] = passe_sep2(tmp->av[i], '"');
+	//		i++;
+	//	}
+	//	tmp = tmp->next;
+	//}
+	// cat fiha mochkil f control c
+	// unset kat segfaulti mlli
+	// khssni n7ayd handle pid hit get_pid() is a forbidden function
+	// env makit updatach
+	// tabulation makhddamach

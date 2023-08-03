@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 11:23:19 by mfadil            #+#    #+#             */
-/*   Updated: 2023/07/18 14:17:34 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/08/01 11:39:29 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ t_collect	*type_lstlast(t_collect *lst)
 {
 	t_collect	*tmp;
 
+	tmp = lst;
 	if (lst == NULL)
 		return (NULL);
-	tmp = lst;
 	while (tmp->next != NULL)
 	{
 		tmp = tmp->next;

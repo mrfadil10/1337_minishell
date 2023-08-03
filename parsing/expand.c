@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stemsama <stemsama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 15:37:10 by mfadil            #+#    #+#             */
-/*   Updated: 2023/07/16 14:49:46 by stemsama         ###   ########.fr       */
+/*   Updated: 2023/08/03 19:24:25 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,21 +47,24 @@ char	*get_var_value(char *str, char **env)
 	int		lnt;
 	int		i;
 
-	value = NULL;
 	tmp = ft_strjoin(str + 1, "="); // missing type in strjoin
+	i = 0;
 	lnt = ft_strlen(tmp);
+	value = NULL;
 	if (!ft_strcmp(str, "$$"))
 		return (ft_itoa(getpid())); // missing type here
 	if (!ft_strcmp(str, "$?"))
 		return (ft_itoa(g_data.exit)); // same
-	i = -1;
-	while (env[++i])
+	while (env[i])
 	{
-		if (!ft_strncmp(str, env[i], lnt))
-			value = ft_strdup(&env[i][lnt]); // khssni nzid whd parameter hna
+		if (!ft_strncmp(tmp, env[i], lnt))
+		{
+			value = type_strdup(&env[i][lnt], 1);
+		}
+		i++;
 	}
-	if (!value)
-		value = ft_strdup("");
+	if (value == NULL)
+		value = type_strdup("", 1);
 	return (value);
 }
 
@@ -76,7 +79,7 @@ char	*insert(char *str1, char *str2, int size, int index)
 	j = size + index;
 	tmp = str1;
 	lnt = (ft_strlen(str1) - size) + ft_strlen(str2);
-	str1 = back_alloc(sizeof(char) * (size + 1), 1);
+	str1 = back_alloc(sizeof(char) * (lnt + 1), 1);
 	while (i < index)
 	{
 		str1[i] = tmp[i];
@@ -130,7 +133,7 @@ void	herdoc_expander(t_data *node, char **env)
 			line = get_line(line, env, i);
 		write(node->pipe[1], line, ft_strlen(line));
 		write(node->pipe[1], "\n", 1);
-		line = readline("> ");
+		line = readline("heredoc> ");
 		type_lstadd_back(line, 1);
 	}
 	g_data.heredoc = 0;

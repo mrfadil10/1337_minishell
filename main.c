@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:35:42 by stemsama          #+#    #+#             */
-/*   Updated: 2023/07/28 20:23:25 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/08/03 20:25:45 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int	main(int argc, char **argv, char **env)
 	t_data	*data;
 	char	*line;
 	char	**cmd;
+	int		i;
+	int		j;
 
 	(void) argv;
 	(void) argc;
@@ -33,12 +35,30 @@ int	main(int argc, char **argv, char **env)
 	{
 		line = readline("minishell$ ");
 		if (!line)
-			return (ft_putstr_fd("exit\n", 2), exit(2), 1);
-		cmd = ft_split(line, ' ');
+			return (ft_putstr_fd("exit\n", 1), exit(0), 1);
 		add_history(line);
+		cmd = ft_split(line, ' ');
 		data = parsing(line, env);
 		if (!data)
 			continue ;
+		expand(data, env);
+		i = 0;
+		while (data->av[i])
+		{
+			j = 0;
+			while (data->av[i][j])
+			{
+				if (data->av[i][j] == '\'' || data->av[i][j] == '"')
+				{
+					if (part_of_delete_quote(data, i, &j))
+						break ;
+				}
+				else
+					j++;
+			}
+			i++;
+		}
+		data->commands = data->av[0];
 		if (is_builting(data->av))
 			go_to_builting(data->av, lst_env, lst_exp);
 		else
