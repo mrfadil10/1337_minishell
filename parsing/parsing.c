@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 15:43:30 by stemsama          #+#    #+#             */
-/*   Updated: 2023/08/03 19:37:54 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/08/04 16:11:18 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -306,3 +306,6 @@ t_data	*parsing(char *line, char **env)
 	// khssni n7ayd handle pid hit get_pid() is a forbidden function
 	// env makit updatach
 	// tabulation makhddamach
+	// $HOME == is directory
+	// protection dl env
+	// skip space they are in the first string fcl echo

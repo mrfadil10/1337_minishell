@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 13:42:27 by mfadil            #+#    #+#             */
-/*   Updated: 2023/08/02 22:32:08 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/08/04 15:28:11 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,12 +93,41 @@ void	part_of_expand(t_data *data, char **env, int c)
 	}
 }
 
-void	expand(t_data *data, char **env)
+char	**list_to_tab(t_env *lst_env)
+{
+	int		i;
+	int		lnt;
+	char	**tab;
+	t_env	*tmp;
+
+	i = -1;
+	lnt = 0;
+	tmp = lst_env;
+	while (tmp)
+	{
+		tmp = tmp->next;
+		lnt++;
+	}
+	tab = back_alloc(sizeof(char *) * (lnt + 1), 1);
+	if (!tab)
+		exit (1);
+	while (lst_env)
+	{
+		tab[++i] = ft_strjoin(lst_env->name, lst_env->value);
+		lst_env = lst_env->next;
+	}
+	tab[++i] = NULL;
+	return (tab);
+}
+
+void	expand(t_data *data, t_env *lst_env)
 {
 	t_data	*tmp;
+	char	**env;
 	int		i;
 
 	i = 0;
+	env = list_to_tab(lst_env);
 	tmp = data;
 	if (tmp->t_type != COMMND && tmp->t_type != SIQUOTE
 		&& tmp->t_type != DOQUOTE)

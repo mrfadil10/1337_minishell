@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:35:44 by stemsama          #+#    #+#             */
-/*   Updated: 2023/08/02 21:26:19 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/08/04 15:31:21 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,7 +187,7 @@ t_data		*ft_dup(t_data *data);
 void		add_back(t_data **node, t_data *data);
 char		*ft_mystrjoin(char *s1, char *s2);
 char		**tab_fixed(char **str);
-void		expand(t_data *data, char **env);
+void		expand(t_data *data, t_env *lst_env);
 char		*delete_one(char *str, int idx, int c);
 int			part_of_delete_quote(t_data *data, int i, int *j);
 

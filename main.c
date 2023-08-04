@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:35:42 by stemsama          #+#    #+#             */
-/*   Updated: 2023/08/03 20:25:45 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/08/04 15:31:10 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	main(int argc, char **argv, char **env)
 		data = parsing(line, env);
 		if (!data)
 			continue ;
-		expand(data, env);
+		expand(data, lst_env);
 		i = 0;
 		while (data->av[i])
 		{
