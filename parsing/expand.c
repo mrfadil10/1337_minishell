@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 15:37:10 by mfadil            #+#    #+#             */
-/*   Updated: 2023/08/04 15:33:05 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/08/05 11:58:20 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,12 +124,13 @@ void	herdoc_expander(t_data *node, char **env)
 	g_data.signal = 1;
 	if (pipe(node->pipe) == -1)
 		exit (1);
-	line = readline("> ");
+	line = readline("heredoc> ");
 	type_lstadd_back(line, 1);
-	while (line && g_data.heredoc == 1 && ft_strcmp(line, node->next->av[0]))
+	while (line && ft_strcmp(line, node->next->av[0])
+		&& g_data.heredoc == 1)
 	{
 		i = get_index(line);
-		if (i >= 0) // missing env
+		if (i > -1) // missing env
 			line = get_line(line, env, i);
 		write(node->pipe[1], line, ft_strlen(line));
 		write(node->pipe[1], "\n", 1);

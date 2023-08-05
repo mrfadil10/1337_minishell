@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 15:43:30 by stemsama          #+#    #+#             */
-/*   Updated: 2023/08/04 16:11:18 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/08/05 12:04:25 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,10 +214,6 @@ int	lexer(t_data *data, char **env)
 	}
 	while (node)
 	{
-		//printf("0--%s\n", node->av[0]);
-		//printf("1--%s\n", node->av[1]);
-		//printf("2--%s\n", node->av[2]);
-		//printf("token type: %d\n", node->t_type);
 		if (node->t_type != COMMND && node->t_type != SIQUOTE
 			&& node->t_type != DOQUOTE)
 		{

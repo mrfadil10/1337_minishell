@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 20:36:27 by mfadil            #+#    #+#             */
-/*   Updated: 2023/08/02 23:57:39 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/08/05 16:22:41 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,4 +105,26 @@ char	*delete_one(char *str, int idx, int c)
 	}
 	new[j] = '\0';
 	return (new);
+}
+
+void	handle_quotes(t_data *data)
+{
+	int		i;
+	int		j;
+
+	i = -1;
+	while (data->av[++i])
+	{
+		j = 0;
+		while (data->av[i][j])
+		{
+			if (data->av[i][j] == '\'' || data->av[i][j] == '"')
+			{
+				if (part_of_delete_quote(data, i, &j))
+					break ;
+			}
+			else
+				j++;
+		}
+	}
 }
