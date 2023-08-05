@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 15:43:30 by stemsama          #+#    #+#             */
-/*   Updated: 2023/08/05 12:04:25 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/08/05 21:40:08 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -300,7 +300,6 @@ t_data	*parsing(char *line, char **env)
 	// cat fiha mochkil f control c
 	// unset kat segfaulti mlli
 	// khssni n7ayd handle pid hit get_pid() is a forbidden function
-	// env makit updatach
 	// tabulation makhddamach
 	// $HOME == is directory
 	// protection dl env

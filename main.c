@@ -6,13 +6,26 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:35:42 by stemsama          #+#    #+#             */
-/*   Updated: 2023/08/05 16:45:52 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/08/05 17:40:19 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 t_globv	g_data;
+
+void	exp_and_exec(t_data *data, t_env *lst_env, t_env *lst_exp, char **env)
+{
+	if (data->av)
+	{
+		handle_quotes(data);
+		data->commands = data->av[0];
+	}
+	if (is_builting(data->av))
+		go_to_builting(data->av, lst_env, lst_exp);
+	else
+		go_to_execve(&lst_env, data->av, env);
+}
 
 int	main(int argc, char **argv, char **env)
 {
@@ -38,15 +51,7 @@ int	main(int argc, char **argv, char **env)
 		if (!data)
 			continue ;
 		expand(data, lst_env);
-		if (data->av)
-		{
-			handle_quotes(data);
-			data->commands = data->av[0];
-		}
-		if (is_builting(data->av))
-			go_to_builting(data->av, lst_env, lst_exp);
-		else
-			go_to_execve(&lst_env, data->av, env);
+		exp_and_exec(data, lst_env, lst_exp, env);
 	}
 	return (0);
 }
