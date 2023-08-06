@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 23:12:41 by stemsama          #+#    #+#             */
-/*   Updated: 2023/08/06 10:56:01 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/08/06 22:30:48 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	pars_echo(char **argv, int *is_n, int *i)
 	while (argv[*i])
 	{
 		j = 0;
+		k = 0;
 		if (argv[*i][j++] == '-')
 		{
 			while (argv[*i][j] && argv[*i][j] == 'n')
