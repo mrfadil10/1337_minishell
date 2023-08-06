@@ -3,23 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   tools3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stemsama <stemsama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 02:13:22 by stemsama          #+#    #+#             */
-/*   Updated: 2023/07/16 14:07:03 by stemsama         ###   ########.fr       */
+/*   Updated: 2023/08/06 22:04:35 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void plus_equal_exist(t_env **exp, char *argv)
+void	plus_equal_exist(t_env **exp, char *argv)
 {
 	while ((*exp) != NULL)
 	{
 		if (!ft_strcmp(get_name(passe_sep(argv, '+')), (*exp)->name))
 		{
 			if (ft_strchr((*exp)->value, '='))
-				(*exp)->value = ft_strjoin((*exp)->value + 1, get_value1(argv) + 1);
+				(*exp)->value = ft_strjoin((*exp)->value + 1,
+						get_value1(argv) + 1);
 			else
 				(*exp)->value = ft_strjoin((*exp)->value, get_value1(argv) + 1);
 			(*exp)->n_v = ft_strjoin((*exp)->name, ft_strdup("="));
@@ -30,7 +31,7 @@ void plus_equal_exist(t_env **exp, char *argv)
 	}
 }
 
-void plus_equal_exist_env(t_env **env, char *argv)
+void	plus_equal_exist_env(t_env **env, char *argv)
 {
 	while ((*env) != NULL)
 	{
@@ -44,7 +45,7 @@ void plus_equal_exist_env(t_env **env, char *argv)
 	}
 }
 
-void equal(t_env **exp, char *argv)
+void	equal(t_env **exp, char *argv)
 {
 	while ((*exp) != NULL)
 	{
@@ -58,7 +59,7 @@ void equal(t_env **exp, char *argv)
 	}
 }
 
-void equal_env(t_env **exp, char *argv)
+void	equal_env(t_env **exp, char *argv)
 {
 	while ((*exp) != NULL)
 	{

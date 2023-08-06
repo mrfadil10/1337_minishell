@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 15:37:10 by mfadil            #+#    #+#             */
-/*   Updated: 2023/08/05 11:58:20 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/08/06 18:12:02 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,22 +47,15 @@ char	*get_var_value(char *str, char **env)
 	int		lnt;
 	int		i;
 
-	tmp = ft_strjoin(str + 1, "="); // missing type in strjoin
-	i = 0;
+	i = -1;
+	tmp = ft_strjoin(str + 1, "=");
 	lnt = ft_strlen(tmp);
 	value = NULL;
-	if (!ft_strcmp(str, "$$"))
-		return (ft_itoa(getpid())); // missing type here
 	if (!ft_strcmp(str, "$?"))
-		return (ft_itoa(g_data.exit)); // same
-	while (env[i])
-	{
+		return (ft_itoa(g_data.exit));
+	while (env[++i])
 		if (!ft_strncmp(tmp, env[i], lnt))
-		{
 			value = type_strdup(&env[i][lnt], 1);
-		}
-		i++;
-	}
 	if (value == NULL)
 		value = type_strdup("", 1);
 	return (value);
@@ -98,10 +91,10 @@ char	*insert(char *str1, char *str2, int size, int index)
 
 char	*get_line(char *line, char **env, int idx)
 {
-	char	*tmp;
+	int		i;
 	char	*str;
 	char	*sub_ret;
-	int		i;
+	char	*tmp;
 
 	i = 0;
 	while (idx >= 0)
@@ -114,29 +107,4 @@ char	*get_line(char *line, char **env, int idx)
 		idx = get_index(line);
 	}
 	return (line);
-}
-
-void	herdoc_expander(t_data *node, char **env)
-{
-	int		i;
-	char	*line;
-
-	g_data.signal = 1;
-	if (pipe(node->pipe) == -1)
-		exit (1);
-	line = readline("heredoc> ");
-	type_lstadd_back(line, 1);
-	while (line && ft_strcmp(line, node->next->av[0])
-		&& g_data.heredoc == 1)
-	{
-		i = get_index(line);
-		if (i > -1) // missing env
-			line = get_line(line, env, i);
-		write(node->pipe[1], line, ft_strlen(line));
-		write(node->pipe[1], "\n", 1);
-		line = readline("heredoc> ");
-		type_lstadd_back(line, 1);
-	}
-	g_data.heredoc = 0;
-	close(node->pipe[1]);
 }

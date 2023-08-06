@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 18:10:44 by mfadil            #+#    #+#             */
-/*   Updated: 2023/07/26 17:11:23 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/08/06 18:36:44 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ char	**ft_tabjoin(char **s1, char **s2)
 	int		j;
 	int		lnt;
 
-	// mybe i should not protect this
 	if (!(*s1))
 		return (s2);
 	if (!(*s2))
@@ -55,16 +54,6 @@ void	tab_concat(t_data *node, t_data *data)
 	}
 }
 
-int	ft_tablen(char **str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
-
 char	**dup_to_tab(char **str)
 {
 	char	**tab;
@@ -73,7 +62,7 @@ char	**dup_to_tab(char **str)
 	if (!str)
 		return (NULL);
 	i = 0;
-	tab = back_alloc(sizeof(char *) * (ft_tablen(str) + 1), 1); // to correct
+	tab = back_alloc(sizeof(char *) * (ft_tablen(str) + 1), 1);
 	while (str[i])
 	{
 		tab[i] = type_strdup(str[i], 1);

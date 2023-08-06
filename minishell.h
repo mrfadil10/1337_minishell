@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:35:44 by stemsama          #+#    #+#             */
-/*   Updated: 2023/08/05 14:55:03 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/08/06 20:06:30 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,20 +141,17 @@ int			error_pipe_hrdc_add(int t_type, int next);
 int			lexer(t_data *data, char **env);
 t_data		*parsing(char *line, char **env);
 
-//-----------------------------------------------> n'existe pas !!!!!!!!!!!!! :
-int			arg_token_lnt(char *str, char c);
-int			arg_counter(char *str);
-int			char_strlen(char *str, char c);
-void		remove_token(char **argv);
-void		set_arguments(int ac, char **av, char *str);
-char		**is_command(char *str, t_data *parameter);
-int			pars_quote(char *line);
-
 //-----------------------------------------------> parsing_tools:
+
 void		put_back(t_data **data, char *str, int t_type, int lnt);
 t_data		*ft_mylstlast(t_data *list);
 t_data		*new_data(t_data *prev, char *str, int t_type);
 char		*type_strdup(const char *src, int type);
+
+//------------------------------------------------> parsing_tools3:
+
+void		rep_sp(char *str);
+int			check_sep(char *sep, char s);
 
 //-----------------------------------------------> expand:
 int			get_index(char *str);
@@ -174,9 +171,6 @@ char		*type_substr(const char *str, unsigned int start,
 
 //-----------------------------------------------> utils_2:
 void		free_all(int fd);
-
-//-----------------------------------------------> check_syntax:
-//-----------------------------------------------> check_syntax_utils:
 
 t_data		*normalize(t_data *data);
 char		**ft_tabjoin(char **s1, char **s2);

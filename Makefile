@@ -6,7 +6,7 @@
 #    By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/06 15:15:14 by stemsama          #+#    #+#              #
-#    Updated: 2023/08/05 12:29:44 by mfadil           ###   ########.fr        #
+#    Updated: 2023/08/06 20:07:12 by mfadil           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,8 +21,8 @@ SRC = main.c \
 		builtins/implement_cd.c builtins/implement_echo.c builtins/implement_env.c \
 		builtins/implement_exit.c builtins/implement_unset.c builtins/implement_pwd.c \
 		builtins/implement_export.c\
-		parsing/expand.c parsing/parsing_tools.c parsing/parsing.c \
-		handler_signals.c parsing/normalize.c parsing/normalize_tools.c parsing/expander.c
+		parsing/expand_tools.c parsing/parsing_tools1.c parsing/parsing_tools2.c parsing/parsing_tools3.c parsing/parsing.c \
+		handler_signals.c parsing/normalize.c parsing/normalize_tools.c parsing/expander.c parsing/herdc_exp.c
 
 OBJECT = $(SRC:.c=.o)
 

@@ -6,11 +6,21 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 15:18:10 by mfadil            #+#    #+#             */
-/*   Updated: 2023/07/29 11:23:34 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/08/06 18:36:37 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	ft_tablen(char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
 
 char	**ft_tabdup(char **av)
 {
@@ -93,9 +103,7 @@ t_data	*normalize(t_data *data)
 				|| data->t_type == COMMND)
 			&& (data_prev->t_type == SIQUOTE || data_prev->t_type == DOQUOTE
 				|| data_prev->t_type == COMMND))
-		{
 			tab_concat(ft_mylstlast(new_data), data);
-		}
 		else
 			add_back(&new_data, data);
 		data = data->next;
