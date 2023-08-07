@@ -6,7 +6,7 @@
 /*   By: stemsama <stemsama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 23:35:48 by stemsama          #+#    #+#             */
-/*   Updated: 2023/07/16 14:06:55 by stemsama         ###   ########.fr       */
+/*   Updated: 2023/07/29 10:47:42 by stemsama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ t_env	*ft_lstnew_ind2(char *content)
 	b->name = get_name(content);
 	b->value = get_value1(content);
 	b->n_v = content;
+	b->tag = 0;
 	b->next = NULL;
 	return (b);
 }

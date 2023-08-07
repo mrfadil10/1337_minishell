@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:35:44 by stemsama          #+#    #+#             */
-/*   Updated: 2023/08/06 20:06:30 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/08/07 22:07:32 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # define COMMND 6
 # define ADD 7
 # define HRDC 8
+# define FILEE 9
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -32,6 +33,7 @@
 # include "libft/libft.h"
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <fcntl.h>
 
 typedef struct s_collect
 {
@@ -52,6 +54,7 @@ extern t_globv			g_data;
 
 typedef struct env
 {
+	int			tag;
 	char		*name;
 	char		*value;
 	char		*n_v;
@@ -63,12 +66,30 @@ typedef struct s_data
 	int				pipe[2];
 	int				t_type;
 	int				sp;
+	int				in;
+	int				out;
 	int				ac;
 	char			**av;
 	char			*commands;
 	struct s_data	*prev;
 	struct s_data	*next;
 }	t_data;
+
+//-----------------------------------------------> pipes:
+void		pipeline(t_data *node, t_env *lst_env, t_env *lst_exp, char **env);
+void		pipeline8(t_data *data);
+t_data		*next_node2(t_data *data);
+// void		pipeline4(char ***cmd);
+
+//-----------------------------------------------> redirection:
+int			out_redirection(t_data *node, int fd);
+int			in_redirection(t_data *data, int fd);
+int			open_file(t_data *node, char *cmd);
+
+//-----------------------------------------------> redirection:
+int			fd1_fd2(t_data	*node2, int *fd1, int *fd2);
+int			nbr_pipe(t_data	*data);
+void		choice(t_data	*data, t_env *lst_env, t_env *lst_exp, char **env);
 
 //-----------------------------------------------> implement_cd:
 int			execute_cd(t_env **env, char **argv);
@@ -80,7 +101,6 @@ int			upd_oldpwd(t_env **env, char *pwd);
 //-----------------------------------------------> implement_env:
 t_env		*execute_env(t_env **env);
 t_env		*creat_env(char **env);
-
 //-----------------------------------------------> implement_pwd:
 void		execute_pwd(t_env **env);
 
@@ -101,7 +121,7 @@ int			check_existe(t_env **env, char *new);
 void		affiche_export(t_env **env);
 
 //-----------------------------------------------> implement_unset:
-int			*execute_unset(char **cmd);
+int			execute_unset(t_env *env, t_env *exp, char **cmd);
 
 //-----------------------------------------------> tools1:
 void		ft_lstadd_back2(t_env **lst, t_env *new);
@@ -112,10 +132,9 @@ t_env		*sort_env(t_env **env);
 
 //-----------------------------------------------> tools2:
 int			is_builting(char **cmd);
-void		go_to_execve(t_env **lst_env, char **cmd, char **env);
+void		go_to_execve(t_data *data, t_env **lst_env, char **cmd, char **env);
 void		go_to_builting(char **cmd, t_env *lst_env, t_env *lst_exp);
 char		*passe_sep(char *argv, char sep);
-char		*passe_sep2(char *argv, char sep);
 
 //-----------------------------------------------> tools3:
 void		plus_equal_exist(t_env **exp, char *argv);
@@ -185,5 +204,6 @@ void		expand(t_data *data, t_env *lst_env);
 char		*delete_one(char *str, int idx, int c);
 void		handle_quotes(t_data *data);
 int			part_of_delete_quote(t_data *data, int i, int *j);
+char		**list_to_tab(t_env *lst_env);
 
 #endif

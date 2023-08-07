@@ -6,7 +6,7 @@
 /*   By: stemsama <stemsama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 00:17:23 by stemsama          #+#    #+#             */
-/*   Updated: 2023/07/16 14:03:47 by stemsama         ###   ########.fr       */
+/*   Updated: 2023/07/29 10:41:57 by stemsama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,14 @@ int	*execute_export(t_env **exp, t_env **env, char **argv)
 	{
 		while (cur)
 		{
-			printf("declare -x %s", get_name(cur->n_v));
-			if (cur->value)
-				printf("=\"%s\"\n", get_value1(cur->n_v) + 1);
-			else
-				printf("\n");
+			if (cur->tag == 0)
+			{
+				printf("declare -x %s", get_name(cur->n_v));
+				if (cur->value)
+					printf("=\"%s\"\n", get_value1(cur->n_v) + 1);
+				else
+					printf("\n");
+			}
 			cur = cur->next;
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 15:43:30 by stemsama          #+#    #+#             */
-/*   Updated: 2023/08/06 20:04:58 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/08/07 22:17:24 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,21 @@
 void	token_str(t_data **data, char **str, int *lnt)
 {
 	int		c;
+	int		i;
 	char	*line;
 
-	line = *str;
-	if (*(line - 1) == 32)
-		c = 1;
-	else
-		c = 0;
+	i = 0;
+	c = 0;
+	line = str[0];
+	while (str[0][i])
+	{
+		if (str[0][i] == 32)
+			{
+				c = 1;
+				break;
+			}
+		i++;
+	}
 	while (*line && !check_sep("\"'<>|", *line))
 	{
 		(*lnt)++;
@@ -29,7 +37,7 @@ void	token_str(t_data **data, char **str, int *lnt)
 	}
 	put_back(data, line, COMMND, *lnt);
 	ft_mylstlast(*data)->sp = c;
-	*str = line;
+	str[0]= line;
 	*lnt = 0;
 }
 
@@ -116,10 +124,10 @@ t_data	*parsing(char *line, char **env)
 	data = normalize(data);
 	return (data);
 }
-	// cat fiha mochkil f control c
 	// unset kat segfaulti mlli
 	// khssni n7ayd handle pid hit get_pid() is a forbidden function
 	// tabulation makhddamach
 	// $HOME == is directory
 	// protection dl env
 	// skip space they are in the first string fcl echo
+	// env | grep $HOME

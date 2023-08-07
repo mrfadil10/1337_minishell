@@ -6,53 +6,76 @@
 /*   By: stemsama <stemsama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 16:18:47 by stemsama          #+#    #+#             */
-/*   Updated: 2023/07/16 14:03:37 by stemsama         ###   ########.fr       */
+/*   Updated: 2023/08/06 02:52:13 by stemsama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	execute_cd(t_env **env, char **argv)
+int	check_unset(t_env *env, char **cmd)
+{
+	if (!cmd[1] || !ft_strcmp("~", cmd[1]))
+	{
+		while (env != NULL)
+		{
+			if (!ft_strcmp(get_name("HOME"), env->name))
+			{
+				if (env->tag == 1)
+					return (1);
+				else
+					return (0);
+			}
+			env = env->next;
+		}
+	}
+	return (0);
+}
+
+int	execute_cd(t_env **env, char **cmd)
 {
 	char	*path;
 
-	path = get_path(env, argv);
+	path = get_path(env, cmd);
 	if (!path)
 		return (ERROR);
-	// printf("PWD my : %s\n", path);
+	if (check_unset(*env, cmd) == 1)
+	{
+		printf("Path not valid\n");
+		return (1);
+	}
 	if (chdir(path) == -1)
 	{
 		//probleme 2 : path non valid ? !! (valide -> "path" (../..))
-		printf("minishell: cd: %s : No such file or directory\n", path);
+		// printf("minishell: cd: %s : No such file or directory\n", path);
+		perror("Minishell ");
 		return (ERROR);
 	}
-	// printf("PWD true : %s\n", getcwd(NULL, 0));
 	go_to_home(env);
 	return (0);
 }
 
-char	*get_path(t_env **env, char **argv)
+char	*get_path(t_env **env, char **cmd)
 {
 	char	*path;
 
 	path = NULL;
 	//we have a probleme in ~  (replace with k sera travailler)
-	if ((!ft_strcmp(argv[0], "cd") && (!ft_strcmp(argv[1], "~")))
-		|| (!ft_strcmp(argv[0], "cd") && (argv[1] == NULL)))
+	if ((!ft_strcmp(cmd[0], "cd") && (!ft_strcmp(cmd[1], "~")))
+		|| (!ft_strcmp(cmd[0], "cd") && (cmd[1] == NULL)))
 	{
 		// printf("\n----------->>minishell: cd:HOME not set\n");
 		path = get_value(env, "HOME") + 1;
 		if (!path)
 			printf("minishell: cd: HOME not set");
 	}
-	else if (!ft_strcmp(argv[0], "cd") && (!ft_strcmp(argv[1], "-")))
+	else if (!ft_strcmp(cmd[0], "cd") && (!ft_strcmp(cmd[1], "-")))
 	{
 		path = get_value(env, "OLDPWD") + 1;
 		if (!path)
 			printf("minishell: cd: HOME not set");
 	}
 	else
-		path = argv[1];
+		path = cmd[1];
 	return (path);
 }
 

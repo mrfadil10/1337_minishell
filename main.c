@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:35:42 by stemsama          #+#    #+#             */
-/*   Updated: 2023/08/06 20:10:58 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/08/07 19:34:47 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,7 @@ void	exp_and_exec(t_data *data, t_env *lst_env, t_env *lst_exp, char **env)
 		handle_quotes(data);
 		data->commands = data->av[0];
 	}
-	if (is_builting(data->av))
-		go_to_builting(data->av, lst_env, lst_exp);
-	else
-		go_to_execve(&lst_env, data->av, env);
+	choice(data, lst_env, lst_exp, env);
 }
 
 int	main(int argc, char **argv, char **env)
@@ -37,6 +34,8 @@ int	main(int argc, char **argv, char **env)
 
 	(void) argv;
 	(void) argc;
+	if (isatty(STDIN_FILENO) == 0)
+		return (0);
 	lst_env = creat_env(env);
 	lst_exp = creat_env(env);
 	lst_exp = sort_env(&lst_exp);

@@ -1,43 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   implement_env.c                                    :+:      :+:    :+:   */
+/*   tools4.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: stemsama <stemsama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/15 23:13:51 by stemsama          #+#    #+#             */
-/*   Updated: 2023/07/29 10:41:36 by stemsama         ###   ########.fr       */
+/*   Created: 2023/07/31 10:42:15 by stemsama          #+#    #+#             */
+/*   Updated: 2023/07/31 10:43:14 by stemsama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_env	*execute_env(t_env **env)
+int	ft_lstsize2(t_data *lst)
 {
-	t_env	*tmp;
+	int		a;
 
-	tmp = *env;
-	while (tmp)
+	a = 0;
+	if (!lst)
+		return (0);
+	while (lst != 0)
 	{
-		if (tmp->tag == 0)
-		{
-			printf("%s", tmp->name);
-			if (tmp->value)
-				printf("%s\n", tmp->value);
-		}
-		tmp = tmp->next;
+		lst = lst->next;
+		a++;
 	}
-	return (*env);
-}
-
-t_env	*creat_env(char **env)
-{
-	int		i;
-	t_env	*lst;
-
-	i = -1;
-	lst = NULL;
-	while (env[++i])
-		ft_lstadd_back2(&lst, ft_lstnew_ind2(env[i]));
-	return (lst);
+	return ((a + 1) / 2);
 }

@@ -6,24 +6,34 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 01:16:43 by stemsama          #+#    #+#             */
-/*   Updated: 2023/08/04 16:24:45 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/08/06 22:45:30 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int	*execute_unset(char **cmd)
+// --> HERE ls
+int	execute_unset(t_env *env, t_env *exp, char **cmd)
 {
-	(void) cmd;
-	// int		i;
-
-	// i = 0;
-	// while (argv[++i])
-	// {
-	// 	if (pars_export(argv[i]) == 1)
-	// 		printf("minishell: export: `%s': not a valid identifier\n", argv[i]);
-	// 	else
-	// 		go_to_unset(exp, env, argv[i]);
-	// }
-	return (NULL);
+	if (cmd[0])
+	{
+		while (env != NULL)
+		{
+			if (!ft_strcmp(get_name(cmd[0]), env->name))
+			{
+				env->tag = 1;
+				break ;
+			}
+			env = env->next;
+		}
+		while (exp != NULL)
+		{
+			if (!ft_strcmp(get_name(cmd[0]), exp->name))
+			{
+				exp->tag = 1;
+				return (1);
+			}
+			exp = exp->next;
+		}
+	}
+	return (0);
 }

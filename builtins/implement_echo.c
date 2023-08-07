@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   implement_echo.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
+/*   By: stemsama <stemsama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 23:12:41 by stemsama          #+#    #+#             */
-/*   Updated: 2023/08/06 22:30:48 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/07/29 10:41:16 by stemsama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,3 @@ char	*delete_quote(char *str)
 	printf("new --> %s\n", new);
 	return (new);
 }
-
-	// if (is_closed(line))
-	// 	return (NULL);

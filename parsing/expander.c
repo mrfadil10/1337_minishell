@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 13:42:27 by mfadil            #+#    #+#             */
-/*   Updated: 2023/08/06 19:14:45 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/08/07 19:44:33 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,15 +101,17 @@ char	**list_to_tab(t_env *lst_env)
 	tmp = lst_env;
 	while (tmp)
 	{
+		if (!tmp->tag)
+			lnt++;
 		tmp = tmp->next;
-		lnt++;
 	}
 	tab = back_alloc(sizeof(char *) * (lnt + 1), 1);
 	if (!tab)
 		exit (1);
 	while (lst_env)
 	{
-		tab[++i] = ft_strjoin(lst_env->name, lst_env->value);
+		if (!lst_env->tag)
+			tab[++i] = ft_strjoin(lst_env->name, lst_env->value);
 		lst_env = lst_env->next;
 	}
 	tab[++i] = NULL;
@@ -123,17 +125,29 @@ void	expand(t_data *data, t_env *lst_env)
 	int		ret;
 	int		i;
 
-	i = -1;
+	i = 0;
 	env = list_to_tab(lst_env);
 	tmp = data;
-	if (tmp->t_type != COMMND && tmp->t_type != SIQUOTE
-		&& tmp->t_type != DOQUOTE)
-		return ;
-	while (tmp->av[++i])
+	while (tmp)
 	{
-		ret = check_key(data->av[i]);
-		part_of_expand(tmp, env, ret, i);
+		i = 0;
+		if (tmp->t_type != COMMND && tmp->t_type != SIQUOTE
+			&& tmp->t_type != DOQUOTE)
+		{
+			tmp = tmp->next;
+			continue ;
+		}
+		while (tmp->av && tmp->av[i])
+		{
+			ret = check_key(tmp->av[i]);
+			part_of_expand(tmp, env, ret, i);
+			i++;
+		}
+		if (tmp->av)
+		{
+			tmp->av = tab_fixed(tmp->av);
+			tmp->commands = tmp->av[0];
+		}
+		tmp = tmp->next;
 	}
-	tmp->av = tab_fixed(tmp->av);
-	tmp->commands = tmp->av[0];
 }
