@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stemsama <stemsama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 00:34:58 by stemsama          #+#    #+#             */
-/*   Updated: 2023/08/06 02:47:31 by stemsama         ###   ########.fr       */
+/*   Updated: 2023/08/08 16:26:40 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int	open_file(t_data *node, char *cmd)
 		fd = open(cmd, O_CREAT | O_WRONLY | O_TRUNC, 0777);
 	else if (node->next->t_type == ADD)
 		fd = open(cmd, O_CREAT | O_WRONLY | O_APPEND, 0777);
+	else if (node->next->t_type == HRDC)
+		fd = open(cmd, O_CREAT | O_RDWR, 0777);
 	if (fd == -1)
 	{
 		perror("Erreur lors de l'ouverture du fichier");

@@ -6,13 +6,25 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:35:42 by stemsama          #+#    #+#             */
-/*   Updated: 2023/08/07 19:34:47 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/08/08 15:39:19 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 t_globv	g_data;
+
+void	check_empty_line(char *line)
+{
+	g_data.heredoc = 1;
+	type_lstadd_back(line, 1);
+	if (line == NULL)
+	{
+		printf("mininshell$ exit\n");
+		free_all(0);
+		exit(g_data.exit);
+	}
+}
 
 void	exp_and_exec(t_data *data, t_env *lst_env, t_env *lst_exp, char **env)
 {
@@ -43,7 +55,9 @@ int	main(int argc, char **argv, char **env)
 	sig_nals();
 	while (1)
 	{
+		g_data.heredoc = 0;
 		line = readline("minishell$ ");
+
 		if (!line)
 			return (ft_putstr_fd("exit\n", 1), exit(0), 1);
 		add_history(line);

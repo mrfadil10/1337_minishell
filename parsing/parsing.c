@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 15:43:30 by stemsama          #+#    #+#             */
-/*   Updated: 2023/08/07 22:17:24 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/08/08 16:25:28 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ int	lexer(t_data *data, char **env)
 {
 	t_data	*node;
 
+	(void) env;
 	node = data;
 	if (ft_mylstlast(data)->t_type == HRDC || data->t_type == PIPE)
 	{
@@ -82,18 +83,12 @@ int	lexer(t_data *data, char **env)
 	{
 		if (node->t_type != COMMND && node->t_type != SIQUOTE
 			&& node->t_type != DOQUOTE)
-		{
 			if (node->next
 				&& error_pipe_hrdc_add(node->t_type, node->next->t_type))
 				return (1);
-		}
 		if (node->t_type == SIQUOTE || node->t_type == DOQUOTE)
-		{
 			if (is_closed(node->av[0], node->t_type))
 				return (1);
-		}
-		if (node->t_type == HRDC)
-			herdoc_expander(node, env);
 		node = node->next;
 	}
 	return (0);

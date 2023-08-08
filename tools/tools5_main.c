@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools5_main.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stemsama <stemsama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 02:03:54 by stemsama          #+#    #+#             */
-/*   Updated: 2023/08/06 23:08:29 by stemsama         ###   ########.fr       */
+/*   Updated: 2023/08/08 16:30:33 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,43 @@ t_data	*next_node2(t_data *data)
 	if (!data)
 		return (NULL);
 	data = data->next;
-	
+
 	while (data &&  data->t_type != COMMND)
 		data = data->next;
 	if (!data)
 		return (NULL);
 	return (data);
 }
+int hrdc(t_data	*node2, int *fd1, int *fd2)
+{
+	ft_putstr_fd("2 fyhdty\n",2);
+	t_data *node;
+	node = node2;
+	while (node->next)
+	{
+		if (node->t_type == PIPE)
+			break ;
+		if (node->t_type == HRDC)
+		{
+			if (*fd1 != -2)
+				close(*fd1);
+			*fd1 = open_file(node, node->next->next->av[0]);
+			node->next->next->t_type = FILEE;
+		}
+		if ((*fd2 == -1) || (*fd1 == -1) || (*fd2 == -42) || (*fd1 == -42))
+			return -2;
+		node = node->next;
+	}
+	return (0);
+}
+			//dup2(node->pipe[0], 0);
+			//close(node->pipe[0]);
+			//return (0);
 
 int fd1_fd2(t_data	*node2, int *fd1, int *fd2)
-{	
+{
+	ft_putstr_fd("1 fyhdty\n",2);
+	hrdc(node2, fd1, fd2);
 	while (node2->next)
 	{
 		if (node2->t_type == PIPE)
@@ -47,6 +74,12 @@ int fd1_fd2(t_data	*node2, int *fd1, int *fd2)
 			*fd1 = open_file(node2, node2->next->next->av[0]);
 			node2->next->next->t_type = FILEE;
 		}
+		//if (node2->t_type == HRDC)
+		//{
+		//	dup2(node2->pipe[0], 0);
+		//	close(node2->pipe[0]);
+		//	return (0);
+		//}
 		if ((*fd2 == -1) || (*fd1 == -1) || (*fd2 == -42) || (*fd1 == -42))
 			return -2;
 		node2 = node2->next;
@@ -84,7 +117,7 @@ void choice(t_data	*data, t_env *lst_env, t_env *lst_exp, char **env)
 	// }
 	if (p == 0)
 	{
-		if (is_builting(node->av)) 
+		if (is_builting(node->av))
 		{
 			go_to_builting(node->av, lst_env, lst_exp);
 			return;
@@ -115,7 +148,7 @@ void choice(t_data	*data, t_env *lst_env, t_env *lst_exp, char **env)
 			pipe(node->pipe);
 		if (old != NULL)
 				node->in = old->pipe[0];
-		if ( p != 0)
+		if (p != 0)
 			node->out = node->pipe[1];
 		if (fd1_fd2(node, &node->in, &node->out) == -2)
 			return ;
@@ -147,7 +180,7 @@ void choice(t_data	*data, t_env *lst_env, t_env *lst_exp, char **env)
 				if (old)
 					close(old->in);
 			}
-			if (is_builting(node->av)) 
+			if (is_builting(node->av))
 			{
 				go_to_builting(node->av, lst_env, lst_exp);
 				exit(1);

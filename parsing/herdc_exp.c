@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 18:11:28 by mfadil            #+#    #+#             */
-/*   Updated: 2023/08/06 18:12:14 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/08/08 15:40:10 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	herdoc_expander(t_data *node, char **env)
 	char	*line;
 
 	g_data.signal = 1;
+	g_data.heredoc = 1;
 	if (pipe(node->pipe) == -1)
 		exit (1);
 	line = readline("heredoc> ");
