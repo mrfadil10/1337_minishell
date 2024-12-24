@@ -106,9 +106,5 @@ The shell properly handles and displays error messages for:
 - Unix/Linux system calls documentation
 - 42 School curriculum resources
 
-## Contributors
-- [Your Name](@yourusername)
-- [Optional: Team Member](@teammember)
-
 ## License
 This project is part of the 42 School curriculum and follows its academic guidelines.
