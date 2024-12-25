@@ -1,6 +1,6 @@
 # Minishell
 
-A minimal shell implementation inspired by bash, created as part of the 42 School curriculum. This project aims to help understand how shells work by implementing basic shell functionalities.
+A minimal shell implementation inspired by bash, created as part of the 1337 Coding School curriculum. This project aims to help understand how shells work by implementing basic shell functionalities.
 
 ## Table of Contents
 - [Overview](#overview)
@@ -13,7 +13,7 @@ A minimal shell implementation inspired by bash, created as part of the 42 Schoo
 - [Contributors](#contributors)
 
 ## Overview
-Minishell is a simple shell that implements basic shell functionality, including command execution, environment variable management, and signal handling. The project is written in C and follows 42 School's coding standards.
+Minishell is a simple shell that implements basic shell functionality, including command execution, environment variable management, and signal handling. The project is written in C and follows 1337 Coding School's coding standards.
 
 ## Features
 - Command execution with absolute and relative paths
@@ -30,16 +30,17 @@ Minishell is a simple shell that implements basic shell functionality, including
 ## Installation
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/minishell.git
+git clone https://github.com/mrfadil10/1337_minishell.git
 
 # Navigate to project directory
-cd minishell
+cd 1337_minishell
 
 # Compile the project
 make
 
 # Clean compiled files
-make clean
+'make clean' for object files
+'make fclean' for objects files and executable
 
 # Recompile
 make re
@@ -106,9 +107,5 @@ The shell properly handles and displays error messages for:
 - Unix/Linux system calls documentation
 - 42 School curriculum resources
 
-## Contributors
-- [Your Name](@yourusername)
-- [Optional: Team Member](@teammember)
-
 ## License
-This project is part of the 42 School curriculum and follows its academic guidelines.
+This project is part of the 1337 Coding School curriculum and follows its academic guidelines.
