@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   implement_exit.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stemsama <stemsama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 21:38:53 by stemsama          #+#    #+#             */
-/*   Updated: 2023/07/16 14:03:46 by stemsama         ###   ########.fr       */
+/*   Updated: 2023/08/13 15:58:40 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,22 +24,26 @@ int	ft_isnumber(char *str)
 			return (0);
 		str++;
 	}
-	// if (.. > LLONG_MAX LLONG_MIN)
 	return (1);
 }
 
 int	execute_exit(char **argv)
 {
 	printf("exit\n");
-	if (!argv[0])
-		exit(0);
-	if ((!ft_isnumber(argv[0])) || (ft_atoi(argv[0]) == 1))
-		printf("minishell: exit: %s: numeric argument required\n", *argv);
-	//num long long
-	else if (argv[1])
+	if (argv[1])
+		g_data.exit = ft_atoi(argv[1]);
+	if (!argv[1])
+		exit(g_data.exit);
+	if ((!ft_isnumber(argv[1])) || ((ft_atoi2(argv[1]) == 1) && \
+	(g_data.atoi_exit == 1)))
 	{
-		printf("minishell: exit: too many arguments\n");
+		printf("minishell: exit: %s: numeric argument required\n", argv[1]);
+		g_data.exit = 255;
+	}
+	else if (argv[2])
+	{
+		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		return (1);
 	}
-	exit(0);
+	exit(g_data.exit);
 }

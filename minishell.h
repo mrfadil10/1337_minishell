@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:35:44 by stemsama          #+#    #+#             */
-/*   Updated: 2023/08/07 22:07:32 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/08/13 17:23:19 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,20 +34,39 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <fcntl.h>
+# include <sys/ioctl.h>
 
-typedef struct s_collect
+typedef struct s_data
 {
-	void				*data;
-	struct s_collect	*next;
-}	t_collect;
+	int				pipe[2];
+	int				t_type;
+	int				sp;
+	int				ac;
+	int				in;
+	int				out;
+	char			**av;
+	char			*commands;
+	struct s_data	*prev;
+	struct s_data	*next;
+}	t_data;
 
 typedef struct globv
 {
-	t_collect	*tmp;
-	t_collect	*end;
 	int			signal;
 	int			heredoc;
 	int			exit;
+	int			hrdc_sig_c;
+	int			atoi_exit;
+	int			cheek;
+	int			outt;
+	int			inn;
+	pid_t		pid;
+	int			p;
+	int			exit_status;
+	int			flag;
+	char		*name;
+	t_data		*old;
+	t_data		*nd;
 }	t_globv;
 
 extern t_globv			g_data;
@@ -55,41 +74,32 @@ extern t_globv			g_data;
 typedef struct env
 {
 	int			tag;
+	int			tag2;
+	int			tag3;
 	char		*name;
 	char		*value;
 	char		*n_v;
 	struct env	*next;
 }	t_env;
 
-typedef struct s_data
-{
-	int				pipe[2];
-	int				t_type;
-	int				sp;
-	int				in;
-	int				out;
-	int				ac;
-	char			**av;
-	char			*commands;
-	struct s_data	*prev;
-	struct s_data	*next;
-}	t_data;
+int			main_norm1(char **env, t_env *lst_env, t_env *lst_exp);
+int			handler_exit_status(int exit_status);
+int			child_status(int exit_status);
+t_env		*ft_lstnew_ind3(char *content);
+t_env		*creat_env2(char **env);
 
 //-----------------------------------------------> pipes:
-void		pipeline(t_data *node, t_env *lst_env, t_env *lst_exp, char **env);
-void		pipeline8(t_data *data);
 t_data		*next_node2(t_data *data);
-// void		pipeline4(char ***cmd);
 
 //-----------------------------------------------> redirection:
 int			out_redirection(t_data *node, int fd);
 int			in_redirection(t_data *data, int fd);
-int			open_file(t_data *node, char *cmd);
+int			open_file(t_data *node, char *cmd, char **name);
 
 //-----------------------------------------------> redirection:
 int			fd1_fd2(t_data	*node2, int *fd1, int *fd2);
 int			nbr_pipe(t_data	*data);
-void		choice(t_data	*data, t_env *lst_env, t_env *lst_exp, char **env);
+int			choice(t_data	*data, t_env *lst_env, t_env *lst_exp, char **env);
 
 //-----------------------------------------------> implement_cd:
 int			execute_cd(t_env **env, char **argv);
@@ -99,13 +109,14 @@ void		go_to_home(t_env **env);
 int			upd_oldpwd(t_env **env, char *pwd);
 
 //-----------------------------------------------> implement_env:
-t_env		*execute_env(t_env **env);
+int			execute_env(t_env **env, char **cmd);
 t_env		*creat_env(char **env);
+
 //-----------------------------------------------> implement_pwd:
-void		execute_pwd(t_env **env);
+int			execute_pwd(t_env **env);
 
 //-----------------------------------------------> implement_echo:
-int			execute_echo(char **argv);
+int			execute_echo(char **argv, t_env *lst_env);
 void		pars_echo(char **argv, int *is_n, int *i);
 char		*delete_quote(char *str);//new
 
@@ -114,14 +125,16 @@ int			execute_exit(char **argv);
 int			ft_isnumber(char *str);
 
 //-----------------------------------------------> implement_export:
-int			*execute_export(t_env **exp, t_env **env, char **argv);
+int			execute_export(t_env **exp, t_env **env, char **argv);
 int			pars_export(char *av);
-void		go_to_export(t_env **exp, t_env **env, char *argv);
-int			check_existe(t_env **env, char *new);
+int			go_to_export(t_env **exp, t_env **env, char *argv);
+int			check_existe(t_env **env, char *new, int flag);
 void		affiche_export(t_env **env);
 
 //-----------------------------------------------> implement_unset:
 int			execute_unset(t_env *env, t_env *exp, char **cmd);
+int			go_to_unset(t_env *env, t_env *exp, char *cmd);
+int			pars_unset(char *av);
 
 //-----------------------------------------------> tools1:
 void		ft_lstadd_back2(t_env **lst, t_env *new);
@@ -132,9 +145,10 @@ t_env		*sort_env(t_env **env);
 
 //-----------------------------------------------> tools2:
 int			is_builting(char **cmd);
-void		go_to_execve(t_data *data, t_env **lst_env, char **cmd, char **env);
-void		go_to_builting(char **cmd, t_env *lst_env, t_env *lst_exp);
+int			go_to_execve(t_env **lst_env, char **cmd, char **env);
+int			go_to_builtin(char **cmd, t_env *lst_env, t_env *lst_exp);
 char		*passe_sep(char *argv, char sep);
+char		*passe_sep2(char *argv, char sep);
 
 //-----------------------------------------------> tools3:
 void		plus_equal_exist(t_env **exp, char *argv);
@@ -142,6 +156,49 @@ void		equal(t_env **exp, char *argv);
 void		plus_equal_exist_env(t_env **env, char *argv);
 void		equal_env(t_env **exp, char *argv);
 
+//-----------------------------------------------> tools4:
+int			ft_lstsize2(t_data *lst);
+int			ft_atoi2(char *str);
+int			ft_atoi_trois2(void);
+int			ft_ispath(char *str);
+void		execute_export_norm_1(char **argv, t_env *cur);
+
+//-----------------------------------------------> tools6:
+int			go_to_export_norm(t_env **exp, t_env **env, char *argv);
+void		go_to_execve_norm2(char **cmd, char **env);
+void		go_to_execve_norm1(t_env **lst_env, char **cmd, char **env);
+int			fd1_fd2_norm1(t_data *node2, int *fd2, int a);
+int			fd1_fd2_norm2(t_data *node2, int *fd2);
+
+//-----------------------------------------------> tools7:
+int			fd1_fd2_norm3(t_data *node2, int *fd2, int a);
+void		go_to_execve_nprm3(char	**all_path, char **cmd, char **env);
+int			choice_norm1(int p, t_env *lst_env, char **env, t_data	*data);
+void		choice_norm2(t_data *node, int *fd1, int *fd2);
+int			choice_norm3(t_data *node, int outt, int inn);
+
+//-----------------------------------------------> tools8:
+int			choice_norm4(t_data *node, t_env *lst_env, char **env);
+int			choice_norm5(t_data *node, t_env *lst_env, \
+			char **env, t_env *lst_exp);
+int			choice_norm6(t_data *node, t_env *lst_env, \
+			char **env, t_env *lst_exp);
+void		choice_norm7(t_data *node);
+void		choice_norm8(t_data *node);
+
+//-----------------------------------------------> tools9:
+void		choice_norm9(t_data *data);
+int			choice_norm10(t_env *lst_env, t_env *lst_exp, char **env);
+int			choice_norm11(t_data *node, t_env *lst_env, \
+			t_env *lst_exp, char **env);
+int			choice_norm12(t_env *lst_env, t_env *lst_exp, char **env);
+int			open_file_norm1(t_data *node, char *cmd, \
+			char **name, int fd);
+
+//-----------------------------------------------> tools10:
+int			check_unset(t_env *env, char **cmd);
+char		*get_path_norm1(t_env **env, char **cmd);
+int			upd_oldpwd_norm1(t_env **env, char *pwd);
 //-----------------------------------------------> handler_signals:
 int			sig_nals(void);
 void		go_to_sigint(int sig);
@@ -161,16 +218,10 @@ int			lexer(t_data *data, char **env);
 t_data		*parsing(char *line, char **env);
 
 //-----------------------------------------------> parsing_tools:
-
 void		put_back(t_data **data, char *str, int t_type, int lnt);
 t_data		*ft_mylstlast(t_data *list);
 t_data		*new_data(t_data *prev, char *str, int t_type);
-char		*type_strdup(const char *src, int type);
-
-//------------------------------------------------> parsing_tools3:
-
-void		rep_sp(char *str);
-int			check_sep(char *sep, char s);
+char		*type_strdup(const char *src);
 
 //-----------------------------------------------> expand:
 int			get_index(char *str);
@@ -178,18 +229,18 @@ int			get_lnt(char *str);
 char		*get_var_value(char *str, char **env);
 char		*insert(char *str1, char *str2, int size, int index);
 char		*get_line(char *line, char **env, int idx);
-void		herdoc_expander(t_data *node, char **env);
+
+//-----------------------------------------------> herdc_exp:
+int			herdoc_expander(t_data *node, char **env, int fd1, char *name);
+int			hrdc(t_data	*node2, int *fd1, char **env);
 
 //-----------------------------------------------> utils:
-t_collect	*type_lstlast(t_collect *lst);
-t_collect	*type_lstnew(void *content);
-void		type_lstadd_back(void *ptr, int type);
 void		*back_alloc(unsigned long lnt, int type);
 char		*type_substr(const char *str, unsigned int start,
-				int type, size_t lnt);
+				size_t lnt);
 
-//-----------------------------------------------> utils_2:
-void		free_all(int fd);
+//-----------------------------------------------> check_syntax:
+//-----------------------------------------------> check_syntax_utils:
 
 t_data		*normalize(t_data *data);
 char		**ft_tabjoin(char **s1, char **s2);
@@ -205,5 +256,19 @@ char		*delete_one(char *str, int idx, int c);
 void		handle_quotes(t_data *data);
 int			part_of_delete_quote(t_data *data, int i, int *j);
 char		**list_to_tab(t_env *lst_env);
+
+//-------------------------------------------------------------> garbage collec
+
+void		*ft_malloc(size_t size);
+void		ft_free(void *ptr);
+void		ft_exit(int status);
+char		**ft_mysplit(char const *s, char c);
+char		*ft_myitoa(int n);
+char		*ft_readline(char *prompt);
+char		*ft_mystrtrim(char const *s1, char const *set);
+
+//# define malloc(size)	ft_malloc(size)
+//# define free(ptr)	ft_free(ptr)
+//# define exit(status)	ft_exit(status)
 
 #endif

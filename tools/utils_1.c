@@ -1,75 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils_1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 11:23:19 by mfadil            #+#    #+#             */
-/*   Updated: 2023/08/01 11:39:29 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/08/13 17:23:42 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_collect	*type_lstlast(t_collect *lst)
-{
-	t_collect	*tmp;
-
-	tmp = lst;
-	if (lst == NULL)
-		return (NULL);
-	while (tmp->next != NULL)
-	{
-		tmp = tmp->next;
-	}
-	return (tmp);
-}
-
-t_collect	*type_lstnew(void *content)
-{
-	t_collect	*b;
-
-	b = (t_collect *)malloc(sizeof(t_collect));
-	if (!b)
-		exit (1);
-	b->data = content;
-	b->next = NULL;
-	return (b);
-}
-
-void	type_lstadd_back(void *ptr, int type)
-{
-	t_collect	*data;
-
-	if (!type)
-		data = g_data.end;
-	else
-		data = g_data.tmp;
-	if (!data)
-	{
-		data = type_lstnew(ptr);
-		if (!type)
-			g_data.end = data;
-		else
-			g_data.tmp = data;
-	}
-	else
-		type_lstlast(data)->next = type_lstnew(ptr);
-}
-
-void	*back_alloc(unsigned long lnt, int type)
-{
-	void	*ptr;
-
-	ptr = malloc(lnt);
-	if (!ptr)
-		exit (1);
-	type_lstadd_back(ptr, type);
-	return (ptr);
-}
-
-char	*type_substr(const char *str, unsigned int start, int type, size_t lnt)
+char	*type_substr(const char *str, unsigned int start, size_t lnt)
 {
 	char			*new_str;
 	unsigned long	c;
@@ -78,7 +21,7 @@ char	*type_substr(const char *str, unsigned int start, int type, size_t lnt)
 		return (NULL);
 	if (ft_strlen(str) < start)
 	{
-		new_str = back_alloc(1, type);
+		new_str = ft_malloc(1);
 		if (!new_str)
 			return (NULL);
 		new_str[0] = '\0';
@@ -86,7 +29,7 @@ char	*type_substr(const char *str, unsigned int start, int type, size_t lnt)
 	}
 	if (ft_strlen(str) < lnt)
 		lnt = ft_strlen(str);
-	new_str = (char *)back_alloc(sizeof(char) * (lnt + 1), type);
+	new_str = (char *)ft_malloc(sizeof(char) * (lnt + 1));
 	c = 0;
 	while (start < ft_strlen(str) && c < lnt)
 	{
@@ -96,4 +39,68 @@ char	*type_substr(const char *str, unsigned int start, int type, size_t lnt)
 	}
 	new_str[c] = '\0';
 	return (new_str);
+}
+
+static int	nbrwords(const char *str, char c)
+{
+	int		i;
+	int		k;
+
+	i = 0;
+	k = 0;
+	while (str[i])
+	{
+		while (str[i] && c == str[i])
+			i++;
+		if (str[i])
+			k++;
+		while (str[i] && c != str[i])
+			i++;
+	}
+	return (k);
+}
+
+static void	motsfree(char **c, int i)
+{
+	while (i >= 0)
+	{
+		ft_free(c[i]);
+		i--;
+	}
+	ft_free(c);
+}
+
+static char	**fct(const char *s, char c, int i, int k)
+{
+	int		start;
+	char	**rslt;
+
+	rslt = (char **)ft_malloc((nbrwords(s, c) + 1) * sizeof(char *));
+	if (!rslt)
+		return (0);
+	while (++k < nbrwords(s, c))
+	{
+		while (s[i] && s[i] == c)
+			i++;
+		if (s[i] == '\0')
+			break ;
+		start = i;
+		while (s[i] && s[i] != c)
+			i++;
+		rslt[k] = type_substr(s, start, i - start);
+		if (rslt[k] == NULL)
+		{
+			motsfree (rslt, k);
+			return (NULL);
+		}
+	}
+	rslt[k] = 0;
+	return (rslt);
+}
+
+char	**ft_mysplit(char const *s, char c)
+{
+	if (!s)
+		return (NULL);
+	return (fct (s, c, 0, -1));
 }

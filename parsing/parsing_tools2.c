@@ -6,42 +6,24 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 18:59:53 by mfadil            #+#    #+#             */
-/*   Updated: 2023/08/06 19:08:04 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/08/13 19:22:47 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int	is_closed(char *str, int type)
-{
-	int		c;
-	int		i;
-
-	i = 0;
-	if (type == DOQUOTE)
-		c = '"';
-	else
-		c = '\'';
-	while (str[i] && str[i] != c)
-		i++;
-	if (str[i] == '\0' || ft_strlen(str) == 1)
-	{
-		ft_putstr_fd("minishell: quote not closed\n", 1);
-		return (1);
-	}
-	return (0);
-}
 
 int	error_sup_inf(int t_type, int next)
 {
 	if (next == SUPERIOR && t_type != PIPE)
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token `>'\n", 2);
+		g_data.exit = 258;
 		return (1);
 	}
 	if (next == INFERIOR && t_type != PIPE)
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token `<'\n", 2);
+		g_data.exit = 258;
 		return (1);
 	}
 	return (0);
@@ -52,16 +34,19 @@ int	error_pipe_hrdc_add(int t_type, int next)
 	if (next == PIPE)
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
+		g_data.exit = 258;
 		return (1);
 	}
 	if (next == HRDC && t_type != PIPE)
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token `<<'\n", 2);
+		g_data.exit = 258;
 		return (1);
 	}
 	if (next == ADD && t_type != PIPE)
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token `>>'\n", 2);
+		g_data.exit = 258;
 		return (1);
 	}
 	if (error_sup_inf(t_type, next))
@@ -69,14 +54,19 @@ int	error_pipe_hrdc_add(int t_type, int next)
 	return (0);
 }
 
+char	*init_red(char **str, int *lnt, int *i)
+{
+	*i = *str[0];
+	*lnt = 1;
+	return (++(*str));
+}
+
 void	token_redirect(t_data **data, char **str, int *lnt)
 {
 	int		i;
 	char	*line;
 
-	i = *str[0];
-	*lnt = 1;
-	line = ++(*str);
+	line = init_red(str, lnt, &i);
 	if (*line == i)
 	{
 		*lnt = 2;

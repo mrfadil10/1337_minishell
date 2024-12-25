@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 15:18:10 by mfadil            #+#    #+#             */
-/*   Updated: 2023/08/06 18:36:37 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/08/11 18:25:45 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@ char	**ft_tabdup(char **av)
 
 	if (!av)
 		return (NULL);
-	new = back_alloc(sizeof(char *) * (ft_tablen(av) + 1), 1);
+	new = ft_malloc(sizeof(char *) * (ft_tablen(av) + 1));
 	i = -1;
 	while (av[++i])
-		new[i] = type_strdup(av[i], 1);
+		new[i] = type_strdup(av[i]);
 	new[i] = NULL;
 	return (new);
 }
@@ -42,7 +42,7 @@ void	ft_myadd_front(t_data **data, t_data **tmp, char **cmd)
 	t_data	*node;
 	t_data	*prev;
 
-	node = back_alloc(sizeof(t_data), 1);
+	node = ft_malloc(sizeof(t_data));
 	node->t_type = COMMND;
 	node->av = ft_tabdup(cmd);
 	prev = (*tmp)->prev;
@@ -78,7 +78,7 @@ void	part_of_normalize(t_data **new_data)
 		if (tmp->av)
 		{
 			tmp->ac = ft_tablen(tmp->av);
-			tmp->commands = type_strdup(tmp->av[0], 1);
+			tmp->commands = type_strdup(tmp->av[0]);
 		}
 		tmp = tmp->next;
 	}

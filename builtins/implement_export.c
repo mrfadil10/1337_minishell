@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   implement_export.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stemsama <stemsama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 00:17:23 by stemsama          #+#    #+#             */
-/*   Updated: 2023/07/29 10:41:57 by stemsama         ###   ########.fr       */
+/*   Updated: 2023/08/13 16:02:53 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,82 +29,78 @@ void	affiche_export(t_env **env)
 	}
 }
 
-int	*execute_export(t_env **exp, t_env **env, char **argv)
+int	execute_export(t_env **exp, t_env **env, char **argv)
 {
 	t_env	*cur;
+	t_env	**expp;
 	int		i;
+	int		status;
 
 	cur = *exp;
-	if (argv[1] == NULL)
-	{
-		while (cur)
-		{
-			if (cur->tag == 0)
-			{
-				printf("declare -x %s", get_name(cur->n_v));
-				if (cur->value)
-					printf("=\"%s\"\n", get_value1(cur->n_v) + 1);
-				else
-					printf("\n");
-			}
-			cur = cur->next;
-		}
-	}
+	expp = exp;
+	status = 0;
+	execute_export_norm_1(argv, cur);
 	i = 0;
 	while (argv[++i])
 	{
 		if (pars_export(argv[i]) == 1)
+		{
+			status = 42;
 			printf("minishell: export: `%s': not a valid identifier\n", argv[i]);
+		}
 		else
 			go_to_export(exp, env, argv[i]);
+		exp = expp;
 	}
+	if (status == 42)
+		return (1);
 	return (0);
 }
 
-void	go_to_export(t_env **exp, t_env **env, char *argv)
+int	go_to_export(t_env **exp, t_env **env, char *argv)
 {
-	(void) env;
+	t_env	*tmp;
 
-	if (ft_strchr(argv, '+') != 0 && ft_strncmp((ft_strchr(argv, '+') + 1), "=", 1) == 0)//ff+=po
+	tmp = *exp;
+	if (ft_strchr(argv, '+') != 0 && \
+	ft_strncmp((ft_strchr(argv, '+') + 1), "=", 1) == 0)
 	{
-		if (!check_existe(exp, passe_sep(argv, '+')))//ff+=po && n'existe pas
-		{
-			ft_lstadd_back2(exp, ft_lstnew_ind2(passe_sep(argv, '+')));
-			ft_lstadd_back2(env, ft_lstnew_ind2(passe_sep(argv, '+')));
-			return;
-		}
-		else//ff+=po && existe
-		{	
-			plus_equal_exist(exp, argv);
-			plus_equal_exist_env(env, argv);
-		}
+		if (go_to_export_norm(exp, env, argv) == 0)
+			return (0);
 	}
-	else if (!check_existe(exp, argv))
+	else if (!check_existe(exp, argv, 0))
 	{
 		ft_lstadd_back2(exp, ft_lstnew_ind2(argv));
 		if (ft_strchr(argv, '=') != 0)
 			ft_lstadd_back2(env, ft_lstnew_ind2(argv));
 	}
-	else if (ft_strchr(argv, '=') != 0)// ff=kk
+	else if (ft_strchr(argv, '=') != 0)
 	{
 		equal(exp, argv);
 		equal_env(env, argv);
 	}
+	return (0);
 }
 
-// ss ; ss=+d --> ss="+d"
-int check_existe(t_env **env, char *new)
+int	check_existe(t_env **env, char *new, int flag)
 {
 	t_env	*tmp;
 
+	if (env == NULL)
+		return (0);
+	(void) flag;
 	tmp = *env;
 	while (tmp != NULL)
 	{
 		if (!ft_strcmp(get_name(new), tmp->name))
+		{
+			if (tmp->tag == 1)
+				return (2);
 			return (1);
+		}
 		tmp = tmp->next;
 	}
-	return 0;
+	return (0);
 }
 
 int	pars_export(char *av)
@@ -120,10 +116,10 @@ int	pars_export(char *av)
 		a[0] = 1;
 	while (av[i] && av[i] != '=')
 	{
-		//il ya d'autre condition
-		if ((av[i] >= '0' && av[i] <= '9' && i == 0)
-			|| ((av[i] >= 'z' && av[i] <= 'a') && (av[i] != '+' && av[i] != '_'))
-			|| ((av[i] >= 'Z' && av[i] <= 'A') && (av[i] != '+' && av[i] != '_'))
+		if ((av[i] >= '0' && av[i] <= '9' && i == 0) || ((av[i] >= 'z'
+					&& av[i] <= 'a') && (av[i] != '+' && av[i] != '_'))
+			|| ((av[i] >= 'Z' && av[i] <= 'A') && \
+			(av[i] != '+' && av[i] != '_'))
 			|| (av[i] == '+' && av[i + 1] != '='))
 		{
 			a[1] = 1;

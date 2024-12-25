@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 19:08:04 by stemsama          #+#    #+#             */
-/*   Updated: 2023/08/08 16:36:42 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/08/13 16:16:47 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,7 @@ void	go_to_sigint(int sig)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
-	else
-	{
-		rl_done = 1;
-		g_data.heredoc = 0;
-	}
-}
-
-void	go_to_sigquit(int sig)
-{
-	if (sig == SIGQUIT)
-		;
-	printf("1\n");
-	return ;
+	g_data.exit = 1;
 }
 
 int	sig_nals(void)
@@ -45,8 +33,6 @@ int	sig_nals(void)
 	sig1 = signal(SIGINT, go_to_sigint);
 	sig2 = signal(SIGQUIT, SIG_IGN);
 	if (sig1 == SIG_ERR || sig2 == SIG_ERR)
-	{
-		printf("Signal Error");
-	}
+		printf("Signal Error\n");
 	return (1);
 }

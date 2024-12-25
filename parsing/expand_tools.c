@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 15:37:10 by mfadil            #+#    #+#             */
-/*   Updated: 2023/08/07 19:20:52 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/08/13 17:22:55 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,16 +48,17 @@ char	*get_var_value(char *str, char **env)
 	int		i;
 
 	i = -1;
-	tmp = ft_strjoin(str + 1, "=");
+	tmp = ft_mystrjoin(str + 1, "=");
 	lnt = ft_strlen(tmp);
 	value = NULL;
 	if (!ft_strcmp(str, "$?"))
-		return (ft_itoa(g_data.exit));
+		return (ft_myitoa(g_data.exit));
 	while (env[++i])
 		if (!ft_strncmp(tmp, env[i], lnt))
-			value = type_strdup(&env[i][lnt], 1);
+			value = type_strdup(&env[i][lnt]);
 	if (value == NULL)
-		value = type_strdup("", 1);
+		value = type_strdup("");
+	ft_free(tmp);
 	return (value);
 }
 
@@ -72,7 +73,7 @@ char	*insert(char *str1, char *str2, int size, int index)
 	j = size + index;
 	tmp = str1;
 	lnt = (ft_strlen(str1) - size) + ft_strlen(str2);
-	str1 = back_alloc(sizeof(char) * (lnt + 1), 1);
+	str1 = ft_malloc(sizeof(char) * (lnt + 1));
 	while (i < index)
 	{
 		str1[i] = tmp[i];
@@ -101,7 +102,7 @@ char	*get_line(char *line, char **env, int idx)
 	{
 		tmp = line;
 		i = get_lnt(&line[idx]);
-		sub_ret = type_substr(line, idx, 1, i);
+		sub_ret = type_substr(line, idx, i);
 		str = get_var_value(sub_ret, env);
 		line = insert(line, str, i, idx);
 		idx = get_index(line);

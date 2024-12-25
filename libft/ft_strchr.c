@@ -6,7 +6,7 @@
 /*   By: stemsama <stemsama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 18:45:54 by stemsama          #+#    #+#             */
-/*   Updated: 2022/10/16 15:55:09 by stemsama         ###   ########.fr       */
+/*   Updated: 2023/08/10 18:19:51 by stemsama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ char	*ft_strchr(const char *s, int c)
 	int		i;
 	int		len;
 
+	if (!s)
+		return (NULL);
 	i = 0;
 	b = (char *)s;
 	len = ft_strlen(s);

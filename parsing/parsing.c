@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 15:43:30 by stemsama          #+#    #+#             */
-/*   Updated: 2023/08/08 16:25:28 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/08/12 21:39:30 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,13 @@
 void	token_str(t_data **data, char **str, int *lnt)
 {
 	int		c;
-	int		i;
 	char	*line;
 
-	i = 0;
-	c = 0;
-	line = str[0];
-	while (str[0][i])
-	{
-		if (str[0][i] == 32)
-			{
-				c = 1;
-				break;
-			}
-		i++;
-	}
+	line = *str;
+	if (*(line - 1) == 32)
+		c = 1;
+	else
+		c = 0;
 	while (*line && !check_sep("\"'<>|", *line))
 	{
 		(*lnt)++;
@@ -37,7 +29,7 @@ void	token_str(t_data **data, char **str, int *lnt)
 	}
 	put_back(data, line, COMMND, *lnt);
 	ft_mylstlast(*data)->sp = c;
-	str[0]= line;
+	str[0] = line;
 	*lnt = 0;
 }
 
@@ -63,6 +55,7 @@ t_data	*tokenize(char *line)
 			token_redirect(&data, &line, &i);
 		else if (*(line++) == '|')
 			put_back(&data, NULL, PIPE, i);
+		g_data.cheek = 1;
 	}
 	return (data);
 }
@@ -77,6 +70,7 @@ int	lexer(t_data *data, char **env)
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n",
 			2);
+		g_data.exit = 258;
 		return (1);
 	}
 	while (node)
@@ -114,15 +108,17 @@ t_data	*parsing(char *line, char **env)
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n",
 			1);
+		g_data.exit = 258;
 		return (NULL);
 	}
 	data = normalize(data);
 	return (data);
 }
-	// unset kat segfaulti mlli
-	// khssni n7ayd handle pid hit get_pid() is a forbidden function
-	// tabulation makhddamach
-	// $HOME == is directory
 	// protection dl env
 	// skip space they are in the first string fcl echo
 	// env | grep $HOME
+	// expand differen in double quote
+	// check quotes is pair
+	// bash-3.2$ export test="file1 file2"
+	// bash-3.2$ >hey >$test
+	// bash: $test: ambiguous redirect

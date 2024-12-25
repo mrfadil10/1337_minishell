@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 13:42:27 by mfadil            #+#    #+#             */
-/*   Updated: 2023/08/07 19:44:33 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/08/13 19:12:43 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,12 +76,12 @@ void	part_of_expand(t_data *data, char **env, int j, int c)
 		size = get_size(&data->av[c][j]);
 		if (data->av[c][j + 1] != '\'' && data->av[c][j + 1] != '\"')
 		{
-			tmp = type_substr(data->av[c], j, 1, size);
+			tmp = type_substr(data->av[c], j, size);
 			str = get_var_value(tmp, env);
 		}
 		else
 		{
-			tmp = type_substr(data->av[c], j + 1, 1, size - 1);
+			tmp = type_substr(data->av[c], j + 1, size - 1);
 			str = tmp;
 		}
 		data->av[c] = insert(data->av[c], str, size, j);
@@ -105,13 +105,13 @@ char	**list_to_tab(t_env *lst_env)
 			lnt++;
 		tmp = tmp->next;
 	}
-	tab = back_alloc(sizeof(char *) * (lnt + 1), 1);
+	tab = ft_malloc(sizeof(char *) * (lnt + 1));
 	if (!tab)
-		exit (1);
+		exit (g_data.exit);
 	while (lst_env)
 	{
 		if (!lst_env->tag)
-			tab[++i] = ft_strjoin(lst_env->name, lst_env->value);
+			tab[++i] = ft_mystrjoin(lst_env->name, lst_env->value);
 		lst_env = lst_env->next;
 	}
 	tab[++i] = NULL;
@@ -140,6 +140,13 @@ void	expand(t_data *data, t_env *lst_env)
 		while (tmp->av && tmp->av[i])
 		{
 			ret = check_key(tmp->av[i]);
+			if (tmp->prev && ret != -1 && (tmp->prev->t_type == SUPERIOR 
+					|| tmp->prev->t_type == INFERIOR))
+			{
+				tmp->av[i] = type_strdup("");
+				i++;
+				continue ;
+			}
 			part_of_expand(tmp, env, ret, i);
 			i++;
 		}

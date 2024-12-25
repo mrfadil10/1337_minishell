@@ -6,7 +6,7 @@
 /*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 18:10:44 by mfadil            #+#    #+#             */
-/*   Updated: 2023/08/06 18:36:44 by mfadil           ###   ########.fr       */
+/*   Updated: 2023/08/11 18:26:14 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@ char	**ft_tabjoin(char **s1, char **s2)
 	if (!(*s2))
 		return (s1);
 	lnt = ft_tablen(s1) + ft_tablen(s2) + 1;
-	new_tab = (char **)back_alloc(lnt * sizeof(char *), 1);
+	new_tab = (char **)ft_malloc(lnt * sizeof(char *));
 	i = -1;
 	j = -1;
 	while (s1[++i])
-		new_tab[i] = type_strdup(s1[i], 1);
+		new_tab[i] = type_strdup(s1[i]);
 	while (s2[++j])
-		new_tab[i + j] = type_strdup(s2[j], 1);
+		new_tab[i + j] = type_strdup(s2[j]);
 	new_tab[i + j] = NULL;
 	return (new_tab);
 }
@@ -62,10 +62,10 @@ char	**dup_to_tab(char **str)
 	if (!str)
 		return (NULL);
 	i = 0;
-	tab = back_alloc(sizeof(char *) * (ft_tablen(str) + 1), 1);
+	tab = ft_malloc(sizeof(char *) * (ft_tablen(str) + 1));
 	while (str[i])
 	{
-		tab[i] = type_strdup(str[i], 1);
+		tab[i] = type_strdup(str[i]);
 		i++;
 	}
 	tab[i] = NULL;
@@ -76,7 +76,7 @@ t_data	*ft_dup(t_data *data)
 {
 	t_data	*dup;
 
-	dup = back_alloc(sizeof(t_data), 1);
+	dup = ft_malloc(sizeof(t_data));
 	dup->t_type = data->t_type;
 	dup->pipe[0] = data->pipe[0];
 	dup->pipe[1] = data->pipe[0];

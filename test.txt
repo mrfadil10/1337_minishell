@@ -1,0 +1,19 @@
+"ls -la"
+
+unset -> export
+
+export a  -> unset a -> export a=dfg
+
+cat
+^\Quit: 3
+
+unset totale puis export
+
+unset totale puis export a
+
+(void) env;
+
+// signal(SIGQUIT, SIG_DFL);
+
+
+export | tr "=" " " | awk '{print$3}' | tr "\n" " "

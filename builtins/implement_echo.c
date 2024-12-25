@@ -3,22 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   implement_echo.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stemsama <stemsama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mfadil <mfadil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 23:12:41 by stemsama          #+#    #+#             */
-/*   Updated: 2023/07/29 10:41:16 by stemsama         ###   ########.fr       */
+/*   Updated: 2023/08/13 15:52:12 by mfadil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	pars_echo(char **argv, int *is_n, int *i)
+void	pars_echo_norm(char **argv, int *is_n, int *i, int k)
 {
-	int	k;
 	int	j;
 
 	j = 0;
-	k = 0;
 	while (argv[*i])
 	{
 		j = 0;
@@ -42,7 +40,36 @@ void	pars_echo(char **argv, int *is_n, int *i)
 	}
 }
 
-int	execute_echo(char **argv)//list des commandes
+void	pars_echo(char **argv, int *is_n, int *i)
+{
+	int	k;
+
+	k = 0;
+	pars_echo_norm(argv, is_n, i, k);
+}
+
+void	execute_echo_norm(char **argv, t_env *lst_env, int i, int j)
+{
+	while (argv[i])
+	{
+		if (!ft_strcmp(argv[i], "~"))
+		{
+			if (i != j)
+				printf(" ");
+			if (get_value(&lst_env, "HOME"))
+				printf("%s", get_value(&lst_env, "HOME") + 1);
+		}
+		else
+		{
+			if (i != j)
+				printf(" ");
+			printf("%s", argv[i]);
+		}
+		i++;
+	}
+}
+
+int	execute_echo(char **argv, t_env *lst_env)
 {
 	int	i;
 	int	*i2;
@@ -57,26 +84,19 @@ int	execute_echo(char **argv)//list des commandes
 	else
 		return (printf("\n"), 1);
 	j = i;
-	while (argv[i])
-	{
-		if (i != j)
-			printf(" ");
-		printf("%s", argv[i++]);
-	}
+	execute_echo_norm(argv, lst_env, i, j);
 	if (is_n)
 		printf("\n");
-	return (1);
+	return (0);
 }
-
-//leak
 
 char	*delete_quote(char *str)
 {
 	int		i;
 	int		j;
-	char	*new = malloc(sizeof(char) * ft_strlen(str));
+	char	*new;
 
-	printf("str --> %s\n", str);
+	new = ft_malloc(sizeof(char) * ft_strlen(str));
 	if (!new)
 		return (0);
 	i = 0;
@@ -93,6 +113,5 @@ char	*delete_quote(char *str)
 	}
 	else
 		new = str;
-	printf("new --> %s\n", new);
 	return (new);
 }
